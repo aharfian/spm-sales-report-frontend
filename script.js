@@ -8,7 +8,6 @@ document.addEventListener('DOMContentLoaded', function() {
     M.textareaAutoResize(document.getElementById('notes'));
 
     const salesReportForm = document.getElementById('salesReportForm');
-    // GANTI: salesItemsTableBody menjadi salesItemsContainer
     const salesItemsContainer = document.getElementById('salesItemsContainer'); 
     const noSaleCheckbox = document.getElementById('noSaleCheckbox');
     const salesDetailSection = document.getElementById('salesDetailSection');
@@ -27,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function() {
     };
     // --- AKHIR DUMMY DATA ---
 
-    // Function to add a new sales item row (DIUBAH TOTAL UNTUK LAYOUT DIV)
+    // Function to add a new sales item row
     function addSalesItemRow() {
         const itemCard = document.createElement('div');
         itemCard.classList.add('sales-item-card', 'card', 'mb-3'); // Tambahkan kelas card untuk styling seperti kartu
@@ -115,11 +114,11 @@ document.addEventListener('DOMContentLoaded', function() {
         if (this.checked) {
             salesDetailSection.style.display = 'none';
             // Clear existing rows if no sale is checked
-            salesItemsContainer.innerHTML = ''; // Ganti ke salesItemsContainer
+            salesItemsContainer.innerHTML = ''; 
         } else {
             salesDetailSection.style.display = 'block';
             // Add one default row if re-enabled and no rows exist
-            if (salesItemsContainer.children.length === 0) { // Ganti ke salesItemsContainer
+            if (salesItemsContainer.children.length === 0) { 
                 addSalesItemRow();
             }
         }
@@ -155,7 +154,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
         let salesItems = [];
         if (!isNoSale) {
-            // GANTI: rows dari tr menjadi sales-item-card div
             const itemCards = salesItemsContainer.querySelectorAll('.sales-item-card'); 
             if (itemCards.length === 0) {
                 M.toast({html: 'Mohon tambahkan setidaknya satu item penjualan atau centang "Laporan No Sale".', classes: 'red'});
