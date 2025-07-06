@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laporan Penjualan SPM</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="card p-3">
+            <div class="card-content">
+                <span class="card-title center-align">Laporan Penjualan Harian SPM</span>
+                <form id="salesReportForm">
+                    <div class="row">
+                        <div class="input-field col s12 m6">
+                            <input id="reportDate" type="text" class="datepicker">
+                            <label for="reportDate">Tanggal Laporan</label>
+                        </div>
+                        <div class="input-field col s12 m6">
+                            <select id="storeName">
+                                <option value="" disabled selected>Pilih Toko</option>
+                                <option value="Toko A">Toko A</option>
+                                <option value="Toko B">Toko B</option>
+                                <option value="Toko C">Toko C</option>
+                                </select>
+                            <label for="storeName">Nama Toko</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <select id="spmName">
+                                <option value="" disabled selected>Pilih Nama SPM</option>
+                                <option value="SPM 1">SPM 1</option>
+                                <option value="SPM 2">SPM 2</option>
+                                <option value="SPM 3">SPM 3</option>
+                                </select>
+                            <label for="spmName">Nama SPM</label>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col s12">
+                            <label>
+                                <input type="checkbox" id="noSaleCheckbox" />
+                                <span>Laporan No Sale?</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div id="salesDetailSection">
+                        <div class="divider mt-3 mb-3"></div>
+                        <h5>Detail Penjualan</h5>
+                        <table class="striped responsive-table">
+                            <thead>
+                                <tr>
+                                    <th>Category</th>
+                                    <th>Kataban (Model)</th>
+                                    <th>Qty</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="salesItemsTableBody">
+                                </tbody>
+                        </table>
+                        <div class="row mt-3">
+                            <div class="col s12 center-align">
+                                <button type="button" class="btn waves-effect waves-light blue darken-1" id="addSalesItemBtn">
+                                    Tambah Item
+                                    <i class="material-icons right">add</i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mt-3">
+                        <div class="input-field col s12">
+                            <textarea id="notes" class="materialize-textarea"></textarea>
+                            <label for="notes">Catatan (opsional)</label>
+                        </div>
+                    </div>
+
+                    <div class="row mt-3">
+                        <div class="col s12 center-align">
+                            <button class="btn waves-effect waves-light green darken-1" type="submit" name="action">
+                                Kirim Laporan
+                                <i class="material-icons right">send</i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+                <div id="responseMessage" class="mt-3 center-align"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
