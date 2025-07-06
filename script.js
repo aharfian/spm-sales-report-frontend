@@ -381,4 +381,16 @@ document.addEventListener('DOMContentLoaded', function() {
         submitReportBtn.innerHTML = 'Kirim Laporan <i class="material-icons right">send</i>';
         submitReportBtn.classList.remove('pulse');
     }
+    // 🔄 Tampilkan loading saat fetch data awal, lalu sembunyikan form
+    document.getElementById('loadingSection').style.display = 'block';
+    salesReportForm.classList.add('hidden');
+    
+    Promise.all([
+        fetchStoreSpmData(),
+        fetchProdukKategoriData()
+    ]).then(() => {
+        document.getElementById('loadingSection').style.display = 'none';
+        salesReportForm.classList.remove('hidden');
+    });
+
 });
