@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // KONFIGURASI FRONTEND
     // ====================================================================================
     // GANTI INI DENGAN URL WEB APP GOOGLE APPS SCRIPT ANDA!
-    const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbw_gDTik5b0RO7Zgy7LSIgRet7ItI5A6BGl4NAI81l6-v7-mMNcT_i7T4sVdBsqtg/exec'; 
+    const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbzMrewsGvQA0EhcNteulqE51QgCJiATYsA5Vftxqng7GBdtrLeto0OTxjsDrrBDJSw/exec'; 
 
     const salesReportForm = document.getElementById('salesReportForm');
     const salesItemsContainer = document.getElementById('salesItemsContainer'); 
