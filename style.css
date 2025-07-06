@@ -65,6 +65,7 @@ select:focus {
     margin: 20px 0;
 }
 
+/* Default table styling for larger screens */
 table.responsive-table th,
 table.responsive-table td {
     padding: 10px 15px;
@@ -108,38 +109,95 @@ table.striped > tbody > tr:nth-child(odd) {
     }
 }
 
-/* Penyesuaian untuk Tampilan Mobile (Layar <= 600px) */
+
+/* --- PENYESUAIAN UNTUK TAMPILAN MOBILE: TABEL STACK KE BAWAH --- */
 @media (max-width: 600px) {
-    /* Kurangi padding pada sel tabel agar lebih ringkas */
-    table.striped th,
-    table.striped td {
-        padding: 10px 5px !important; /* Padding lebih kecil */
-        vertical-align: top; /* Pastikan konten di atas sel jika ada banyak baris */
+    /* Sembunyikan thead (header tabel) secara visual namun tetap aksesibel */
+    #salesDetailSection table thead {
+        border: none;
+        clip: rect(0 0 0 0);
+        height: 1px;
+        margin: -1px;
+        overflow: hidden;
+        padding: 0;
+        position: absolute;
+        width: 1px;
     }
 
-    /* Pastikan select dan input di dalam tabel mengambil lebar penuh sel */
-    table.striped .input-field,
-    table.striped select {
-        width: 100% !important;
+    /* Jadikan tabel, tbody, dan setiap baris tr sebagai blok */
+    #salesDetailSection table,
+    #salesDetailSection table tbody,
+    #salesDetailSection table tr {
+        display: block;
+        width: 100%;
+    }
+
+    /* Beri styling seperti kartu untuk setiap baris item penjualan */
+    #salesDetailSection table tr {
+        margin-bottom: 15px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 10px;
+        background-color: #fff; /* Latar belakang putih untuk setiap kartu */
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05); /* Sedikit bayangan */
+    }
+
+    /* Jadikan setiap sel td sebagai blok */
+    #salesDetailSection table td {
+        display: block;
+        text-align: right; /* Rata kanan nilai */
+        padding: 8px 10px !important; /* Sesuaikan padding */
+        border-bottom: 1px solid #eee; /* Garis pemisah antar field */
+    }
+
+    /* Hapus garis pemisah dari sel terakhir di setiap baris */
+    #salesDetailSection table td:last-child {
+        border-bottom: 0;
+    }
+
+    /* Gunakan pseudo-element ::before untuk menampilkan nama kolom */
+    #salesDetailSection table td::before {
+        content: attr(data-label); /* Mengambil teks dari atribut data-label */
+        float: left;
+        font-weight: bold;
+        text-transform: uppercase;
+        margin-right: 10px; /* Spasi antara label dan nilai */
+        color: #555;
+    }
+
+    /* Penyesuaian elemen Materialize di dalam sel yang ditumpuk */
+    #salesDetailSection table td .input-field,
+    #salesDetailSection table td select,
+    #salesDetailSection table td .select-wrapper {
+        width: auto !important; /* Biarkan konten menyesuaikan lebar */
+        display: inline-block; /* Agar bisa sebaris dengan label dari ::before */
+        vertical-align: middle; /* Sejajarkan secara vertikal */
         margin-top: 0;
         margin-bottom: 0;
     }
 
-    /* Sesuaikan tampilan select dropdown Materialize agar tidak terpotong */
-    table.striped .select-wrapper input.select-dropdown {
-        margin-bottom: 0 !important; /* Hapus margin bawah default Materialize */
-        padding-left: 0 !important; /* Hapus padding kiri default */
-        padding-right: 0 !important; /* Hapus padding kanan default */
-        min-height: 35px; /* Beri tinggi minimum agar tidak terlalu pendek */
-        line-height: 35px; /* Sesuaikan line-height */
+    #salesDetailSection table td .select-wrapper input.select-dropdown {
+        width: auto !important;
+        display: inline-block;
+        padding-left: 0 !important;
+        text-align: right; /* Rata kanan nilai di dalam select */
     }
 
-    /* Beri lebar minimum pada konten dropdown yang muncul agar tidak terlalu sempit */
+    /* Pastikan konten dropdown yang muncul tidak melebihi layar */
     .dropdown-content {
-        min-width: 150px !important; /* Lebar minimum untuk daftar dropdown */
+        min-width: 180px !important; /* Lebar minimum untuk daftar dropdown */
+        max-width: 90vw !important; /* Cegah melampaui lebar layar */
+        left: 5% !important; /* Posisikan di tengah */
+        right: 5% !important; /* Posisikan di tengah */
     }
 
-    /* Sesuaikan ukuran font untuk tombol kecil di dalam tabel (opsional) */
+    /* Posisi tombol aksi (remove) */
+    #salesDetailSection table td .remove-item-btn {
+        float: right; /* Pindahkan tombol ke kanan */
+        margin-top: -5px; /* Sesuaikan posisi vertikal */
+    }
+
+    /* Sesuaikan ukuran font untuk tombol kecil di dalam tabel */
     .btn-floating.remove-item-btn {
         width: 30px;
         height: 30px;
