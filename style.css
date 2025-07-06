@@ -7,10 +7,15 @@ body {
     margin-bottom: 30px;
 }
 
+/* Pastikan semua .card memiliki padding yang konsisten */
 .card {
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.card-content {
+    padding: 20px; /* Tambahkan atau pastikan padding ini ada untuk konten dalam card */
 }
 
 .card-title {
@@ -58,7 +63,7 @@ select:focus {
 }
 
 .p-3 {
-    padding: 1.5rem !important;
+    padding: 1.5rem !important; /* Ini adalah utilitas padding, pastikan konsisten */
 }
 
 .divider {
@@ -100,16 +105,22 @@ select:focus {
 }
 
 /* --- GAYA UNTUK SALES ITEM CARD (MIRIP GOOGLE FORM) --- */
+
+/* Pastikan container item penjualan tidak memiliki padding horizontal yang berlebihan */
+#salesItemsContainer {
+    padding: 0; /* Hapus padding default jika ada */
+    margin-left: -0.75rem; /* Kompensasi padding default Materialize .row jika perlu */
+    margin-right: -0.75rem; /* Kompensasi padding default Materialize .row jika perlu */
+}
+
 .sales-item-card {
-    /* Lebarkan kartu item secara default (akan mengambil lebar yang tersedia) */
-    width: 100%; /* Pastikan mengambil 100% dari parent-nya */
-    max-width: none; /* Hapus batasan max-width jika ada */
+    width: calc(100% - 1.5rem); /* Mengambil 100% lebar dikurangi total padding horizontal default Materialize col */
+    margin-left: 0.75rem; /* Kompensasi untuk padding col */
+    margin-right: 0.75rem; /* Kompensasi untuk padding col */
+    margin-bottom: 20px; /* Jarak antar kartu item */
     
     border: 1px solid #e0e0e0;
     border-radius: 8px;
-    margin-bottom: 20px; /* Jarak antar kartu item */
-    /* Hapus padding dari sini jika sudah diatur oleh Materialize .card */
-    /* Jika .card sudah ada padding, tidak perlu padding di .sales-item-card lagi */
     background-color: #ffffff;
     box-shadow: 0 2px 5px rgba(0,0,0,0.08); /* Sedikit bayangan */
 }
@@ -152,4 +163,17 @@ select:focus {
 /* Optional: Untuk tombol tambah item di bawah form */
 .add-item-btn {
     margin-top: 20px;
+}
+
+/* Pastikan Materialize .row di dalam sales-item-card tidak menambah margin yang tidak diinginkan */
+.sales-item-card .row {
+    margin-left: -0.75rem; /* Offset Materialize col padding */
+    margin-right: -0.75rem; /* Offset Materialize col padding */
+    margin-bottom: 0; /* Hapus margin-bottom default row */
+}
+
+/* Pastikan .col s12 di dalamnya mengambil lebar penuh tanpa masalah */
+.sales-item-card .row .col.s12 {
+    padding-left: 0.75rem !important;
+    padding-right: 0.75rem !important;
 }
