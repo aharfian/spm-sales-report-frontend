@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // KONFIGURASI FRONTEND
     // ====================================================================================
     // GANTI INI DENGAN URL WEB APP GOOGLE APPS SCRIPT ANDA!
-    const WEB_APP_URL = 'rahasia'; 
+    const WEB_APP_URL = 'https://spm-middleware.onrender.com/proxy'; 
 
     const salesReportForm = document.getElementById('salesReportForm');
     const salesItemsContainer = document.getElementById('salesItemsContainer'); 
