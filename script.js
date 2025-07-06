@@ -29,24 +29,25 @@ document.addEventListener('DOMContentLoaded', function() {
     // Function to add a new sales item row
     function addSalesItemRow() {
         const row = document.createElement('tr');
+        // PENTING: Tambahkan atribut data-label pada setiap <td>
         row.innerHTML = `
-            <td>
+            <td data-label="Category">
                 <select class="category-select">
                     <option value="" disabled selected>Pilih Kategori</option>
                     ${Object.keys(categoryToKatabanMap).map(category => `<option value="${category}">${category}</option>`).join('')}
                 </select>
             </td>
-            <td>
+            <td data-label="Kataban (Model)">
                 <select class="kataban-select" disabled>
                     <option value="" disabled selected>Pilih Model</option>
                 </select>
             </td>
-            <td>
+            <td data-label="Qty">
                 <div class="input-field">
                     <input type="number" class="qty-input" min="1" value="1">
                 </div>
             </td>
-            <td>
+            <td data-label="Aksi">
                 <button type="button" class="btn-floating waves-effect waves-light red remove-item-btn">
                     <i class="material-icons">remove</i>
                 </button>
