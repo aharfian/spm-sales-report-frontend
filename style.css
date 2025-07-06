@@ -1,113 +1,17 @@
-body {
-    background-color: #f5f5f5; /* Warna latar belakang abu-abu muda */
-}
-
-.container {
-    margin-top: 30px;
-    margin-bottom: 30px;
-}
-
-.card {
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-}
-
-.card-title {
-    font-weight: 600;
-    margin-bottom: 20px;
-    color: #424242;
-}
-
-.input-field label {
-    color: #2196f3; /* Warna label biru */
-}
-
-.input-field input[type=text]:focus + label,
-.input-field input[type=number]:focus + label,
-.input-field textarea:focus + label {
-    color: #2196f3 !important;
-}
-
-.input-field input[type=text]:focus,
-.input-field input[type=number]:focus,
-.input-field textarea:focus {
-    border-bottom: 1px solid #2196f3 !important;
-    box-shadow: 0 1px 0 0 #2196f3 !important;
-}
-
-select:focus {
-    outline: none !important;
-}
-
-.btn {
-    border-radius: 4px;
-}
-
-.btn i {
-    font-size: 1.2rem;
-    vertical-align: middle;
-}
-
-.mt-3 {
-    margin-top: 1.5rem !important;
-}
-
-.mb-3 {
-    margin-bottom: 1.5rem !important;
-}
-
-.p-3 {
-    padding: 1.5rem !important;
-}
-
-.divider {
-    margin: 20px 0;
-}
-
-/* HAPUS SEMUA GAYA TABEL RESPONSIF SEBELUMNYA KARENA KITA TIDAK LAGI MENGGUNAKAN TABEL */
-/* Hapus blok media query @media (max-width: 600px) yang lama untuk tabel */
-
-/* Custom styles for Materialize dropdowns that sometimes overflow */
-.dropdown-content {
-    max-height: 300px; /* Adjust as needed */
-    overflow-y: auto;
-    width: auto !important; /* Ensure dropdown width adapts */
-}
-
-/* Ensure toast messages are visible */
-#toast-container {
-  z-index: 9999;
-}
-
-/* New utility class for hiding elements */
-.hidden {
-    display: none !important;
-}
-
-/* Optional: Animation for submit button while processing */
-.btn.pulse {
-    animation: pulse 1.5s infinite;
-}
-
-@keyframes pulse {
-    0% {
-        box-shadow: 0 0 0 0 rgba(38, 166, 154, 0.4);
-    }
-    70% {
-        box-shadow: 0 0 0 10px rgba(38, 166, 154, 0);
-    }
-    100% {
-        box-shadow: 0 0 0 0 rgba(38, 166, 154, 0);
-    }
-}
+/* ... (Kode CSS Anda yang sudah ada) ... */
 
 /* --- GAYA BARU UNTUK SALES ITEM CARD (MIRIP GOOGLE FORM) --- */
 .sales-item-card {
+    /* Hapus atau kurangi padding horizontal jika terlalu banyak */
+    padding: 15px !important; /* Contoh: atur padding agar seragam */
+    
+    /* Lebarkan kartu item secara default (akan mengambil lebar yang tersedia) */
+    width: 100%; /* Pastikan mengambil 100% dari parent-nya */
+    max-width: none; /* Hapus batasan max-width jika ada */
+
     border: 1px solid #e0e0e0;
     border-radius: 8px;
     margin-bottom: 20px; /* Jarak antar kartu item */
-    padding: 15px;
     background-color: #ffffff;
     box-shadow: 0 2px 5px rgba(0,0,0,0.08); /* Sedikit bayangan */
 }
@@ -144,3 +48,8 @@ select:focus {
 .add-item-btn {
     margin-top: 20px;
 }
+
+/* --- HAPUS MEDIA QUERY TABEL LAMA --- */
+/* Pastikan tidak ada lagi media query yang mengatur tampilan tabel (th, td, tr, dll.) */
+/* Jika Anda masih memiliki blok @media (max-width: 600px) yang berisi styling tabel */
+/* seperti 'display: block', 'text-align: right', '::before', dll., HAPUS SEMUA ITU. */
