@@ -7,29 +7,142 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     M.textareaAutoResize(document.getElementById('notes'));
 
+    // ====================================================================================
+    // KONFIGURASI FRONTEND
+    // ====================================================================================
+    // GANTI INI DENGAN URL WEB APP GOOGLE APPS SCRIPT ANDA!
+    const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbw_gDTik5b0RO7Zgy7LSIgRet7ItI5A6BGl4NAI81l6-v7-mMNcT_i7T4sVdBsqtg/exec'; 
+
     const salesReportForm = document.getElementById('salesReportForm');
     const salesItemsContainer = document.getElementById('salesItemsContainer'); 
     const noSaleCheckbox = document.getElementById('noSaleCheckbox');
     const salesDetailSection = document.getElementById('salesDetailSection');
     const addSalesItemBtn = document.getElementById('addSalesItemBtn');
     const responseMessageDiv = document.getElementById('responseMessage');
-    const submitReportBtn = document.getElementById('submitReportBtn'); // Tombol submit
-    const successMessageSection = document.getElementById('successMessageSection'); // Bagian pesan sukses
-    const submitNewReportBtn = document.getElementById('submitNewReportBtn'); // Tombol Kirim Laporan Baru
+    const submitReportBtn = document.getElementById('submitReportBtn'); 
+    const successMessageSection = document.getElementById('successMessageSection'); 
+    const submitNewReportBtn = document.getElementById('submitNewReportBtn'); 
 
-    // --- DUMMY DATA UNTUK DEMONSTRASI FRONTEND DINAMIS ---
-    const categoryToKatabanMap = {
-        "Handphone": ["iPhone 15 Pro Max", "Samsung Galaxy S24 Ultra", "Xiaomi 14", "Oppo Find X7"],
-        "Aksesoris": ["Earphone Bluetooth", "Power Bank 10000mAh", "Case HP", "Charger Fast Charging"],
-        "Laptop": ["MacBook Air M3", "Dell XPS 15", "HP Spectre x360"],
-        "Smartwatch": ["Apple Watch Series 9", "Samsung Galaxy Watch 6", "Huawei Watch GT 4"]
-    };
-    // --- AKHIR DUMMY DATA ---
+    // ====================================================================================
+    // VAR GLOBAL UNTUK DATA MASTER (DARI GOOGLE APPS SCRIPT)
+    // ====================================================================================
+    let storeSpmData = []; // Akan diisi dari Google Apps Script (untuk Toko & SPM)
+    let productCategoryData = []; // BARU: Akan diisi dari Google Apps Script (untuk Kategori & Kataban)
+    let categoryToKatabanMap = {}; // BARU: Akan dibuat dari productCategoryData untuk memudahkan lookup
 
-    // Function to add a new sales item row
+    // ====================================================================================
+    // FUNGSI UNTUK MENGAMBIL DATA TOKO/SPM DARI APPS SCRIPT
+    // ====================================================================================
+    async function fetchStoreSpmData() {
+        try {
+            const response = await fetch(WEB_APP_URL + '?action=getStoreSpmData'); 
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const data = await response.json();
+            
+            if (data.success) {
+                storeSpmData = data.data;
+                populateStoreDropdown();
+            } else {
+                M.toast({html: `Gagal memuat data toko/SPM: ${data.message}`, classes: 'red'});
+                console.error("Error fetching store/SPM data:", data.message);
+            }
+        } catch (error) {
+            M.toast({html: `Kesalahan koneksi saat memuat data toko/SPM: ${error.message}`, classes: 'red'});
+            console.error("Fetch error for store/SPM data:", error);
+        }
+    }
+
+    // ====================================================================================
+    // FUNGSI BARU: UNTUK MENGAMBIL DATA PRODUK/KATEGORI DARI APPS SCRIPT
+    // ====================================================================================
+    async function fetchProdukKategoriData() {
+        try {
+            const response = await fetch(WEB_APP_URL + '?action=getProdukKategoriData'); // Menambahkan parameter 'action'
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const data = await response.json();
+            
+            if (data.success) {
+                productCategoryData = data.data;
+                // Buat categoryToKatabanMap dari data yang diambil
+                categoryToKatabanMap = productCategoryData.reduce((acc, item) => {
+                    if (!acc[item.category]) {
+                        acc[item.category] = [];
+                    }
+                    acc[item.category].push(item.kataban);
+                    return acc;
+                }, {});
+                // Setelah data produk dimuat, tambahkan baris penjualan awal jika diperlukan
+                if (!noSaleCheckbox.checked && salesItemsContainer.children.length === 0) { 
+                    addSalesItemRow();
+                }
+            } else {
+                M.toast({html: `Gagal memuat data produk/kategori: ${data.message}`, classes: 'red'});
+                console.error("Error fetching product/category data:", data.message);
+            }
+        } catch (error) {
+            M.toast({html: `Kesalahan koneksi saat memuat data produk/kategori: ${error.message}`, classes: 'red'});
+            console.error("Fetch error for product/category data:", error);
+        }
+    }
+
+    // ====================================================================================
+    // FUNGSI UNTUK MENGISI DROPDOWN TOKO
+    // ====================================================================================
+    function populateStoreDropdown() {
+        const storeSelect = document.getElementById('storeName');
+        storeSelect.innerHTML = '<option value="" disabled selected>Pilih Toko</option>'; 
+
+        const uniqueStores = [...new Set(storeSpmData.map(item => item.storeName))];
+        uniqueStores.forEach(store => {
+            const option = document.createElement('option');
+            option.value = store;
+            option.textContent = store;
+            storeSelect.appendChild(option);
+        });
+        M.FormSelect.init(storeSelect); 
+    }
+
+    // ====================================================================================
+    // FUNGSI UNTUK MENGISI DROPDOWN SPM BERDASARKAN TOKO TERPILIH
+    // ====================================================================================
+    function populateSpmDropdown(selectedStore) {
+        const spmSelect = document.getElementById('spmName');
+        spmSelect.innerHTML = '<option value="" disabled selected>Pilih Nama SPM</option>'; 
+        
+        if (selectedStore) {
+            const filteredSpms = storeSpmData.filter(item => item.storeName === selectedStore);
+            const uniqueSpms = [...new Set(filteredSpms.map(item => item.spmName))]; 
+            
+            uniqueSpms.forEach(spm => {
+                const option = document.createElement('option');
+                option.value = spm;
+                option.textContent = spm;
+                spmSelect.appendChild(option);
+            });
+            spmSelect.removeAttribute('disabled'); 
+        } else {
+            spmSelect.setAttribute('disabled', 'disabled'); 
+        }
+        M.FormSelect.init(spmSelect); 
+    }
+
+    // ====================================================================================
+    // EVENT LISTENER UNTUK DROPDOWN TOKO
+    // ====================================================================================
+    document.getElementById('storeName').addEventListener('change', function() {
+        populateSpmDropdown(this.value);
+    });
+
+    // ====================================================================================
+    // FUNGSI addSalesItemRow - MENGGUNAKAN DATA PRODUK DARI APPS SCRIPT
+    // ====================================================================================
     function addSalesItemRow() {
         const itemCard = document.createElement('div');
-        itemCard.classList.add('sales-item-card', 'card', 'mb-3'); // Tambahkan kelas card untuk styling seperti kartu
+        itemCard.classList.add('sales-item-card', 'card', 'mb-3'); 
         itemCard.innerHTML = `
             <div class="card-content">
                 <span class="card-title" style="font-size: 1.2rem; margin-bottom: 15px;">Item Penjualan Baru</span>
@@ -66,78 +179,80 @@ document.addEventListener('DOMContentLoaded', function() {
                 </div>
             </div>
         `;
-        salesItemsContainer.appendChild(itemCard); // Append ke container baru
+        salesItemsContainer.appendChild(itemCard); 
 
-        // Re-initialize Materialize selects for the new item card
         M.FormSelect.init(itemCard.querySelectorAll('select'));
-        M.updateTextFields(); // Perbarui tampilan input fields
+        M.updateTextFields(); 
 
-        // Add event listener for category select change
         itemCard.querySelector('.category-select').addEventListener('change', function() {
             const selectedCategory = this.value;
             const katabanSelect = itemCard.querySelector('.kataban-select');
             
-            // Clear existing options
             katabanSelect.innerHTML = '<option value="" disabled selected>Pilih Model</option>';
             
             if (selectedCategory && categoryToKatabanMap[selectedCategory]) {
-                categoryToKatabanMap[selectedCategory].forEach(model => {
+                // Pastikan kataban unik jika ada duplikasi di sheet
+                const uniqueKatabans = [...new Set(categoryToKatabanMap[selectedCategory])];
+                uniqueKatabans.forEach(model => {
                     const option = document.createElement('option');
                     option.value = model;
                     option.textContent = model;
                     katabanSelect.appendChild(option);
                 });
-                katabanSelect.removeAttribute('disabled'); // Enable kataban select
+                katabanSelect.removeAttribute('disabled'); 
             } else {
-                katabanSelect.setAttribute('disabled', 'disabled'); // Disable if no category selected
+                katabanSelect.setAttribute('disabled', 'disabled'); 
             }
-            // Re-initialize Materialize select after updating options
             M.FormSelect.init(katabanSelect);
         });
 
-        // Add event listener for remove button
         itemCard.querySelector('.remove-item-btn').addEventListener('click', function() {
             itemCard.remove();
         });
     }
 
-    // Initial row for sales items if not "No Sale"
-    if (!noSaleCheckbox.checked) {
-        addSalesItemRow();
-    }
+    // ====================================================================================
+    // LOGIKA INITIALIZATION, ADD ITEM, NO SALE (UPDATE PANGGILAN FUNGSI FETCH)
+    // ====================================================================================
 
-    // Add Sales Item Button Listener
+    // Panggil fungsi untuk mengambil data toko/SPM DAN data produk/kategori saat DOMContentLoaded
+    fetchStoreSpmData(); 
+    fetchProdukKategoriData(); // PANGGILAN FUNGSI BARU!
+
+    // Baris awal item penjualan akan ditambahkan setelah fetchProdukKategoriData() selesai
+    // Ini untuk memastikan dropdown kategori sudah terisi.
+    // if (!noSaleCheckbox.checked) {
+    //     addSalesItemRow(); // Ini dipindahkan ke dalam fetchProdukKategoriData()
+    // }
+
     addSalesItemBtn.addEventListener('click', addSalesItemRow);
 
-    // No Sale Checkbox Listener
     noSaleCheckbox.addEventListener('change', function() {
         if (this.checked) {
             salesDetailSection.style.display = 'none';
-            // Clear existing rows if no sale is checked
             salesItemsContainer.innerHTML = ''; 
         } else {
             salesDetailSection.style.display = 'block';
-            // Add one default row if re-enabled and no rows exist
             if (salesItemsContainer.children.length === 0) { 
                 addSalesItemRow();
             }
         }
     });
 
-    // Form Submission Listener
-    salesReportForm.addEventListener('submit', function(e) {
-        e.preventDefault(); // Prevent default form submission
+    // ====================================================================================
+    // FORM SUBMISSION LISTENER - MENGIRIM DATA KE APPS SCRIPT
+    // ====================================================================================
+    salesReportForm.addEventListener('submit', async function(e) { 
+        e.preventDefault(); 
 
-        responseMessageDiv.innerHTML = ''; // Clear previous messages
-        responseMessageDiv.classList.remove('green-text', 'red-text');
+        responseMessageDiv.innerHTML = ''; 
+        responseMessageDiv.classList.remove('green-text', 'red-text', 'blue-text');
 
-        // --- MENCEGAH DOUBLE SUBMISSION & TAMPILKAN LOADING ---
-        submitReportBtn.disabled = true; // Nonaktifkan tombol
-        submitReportBtn.innerHTML = 'Memproses... <i class="material-icons right">sync</i>'; // Ubah teks tombol
-        submitReportBtn.classList.add('pulse'); // Tambahkan animasi (dari style.css)
-        responseMessageDiv.textContent = 'Laporan Anda sedang diproses (simulasi)...';
+        submitReportBtn.disabled = true; 
+        submitReportBtn.innerHTML = 'Mengirim... <i class="material-icons right">send</i>'; 
+        submitReportBtn.classList.add('pulse'); 
+        responseMessageDiv.textContent = 'Laporan Anda sedang dikirim...';
         responseMessageDiv.classList.add('blue-text');
-        // --- AKHIR PENCEGAHAN DOUBLE SUBMISSION ---
 
         const reportDate = document.getElementById('reportDate').value;
         const storeName = document.getElementById('storeName').value;
@@ -147,7 +262,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         if (!reportDate || !storeName || !spmName) {
             M.toast({html: 'Mohon lengkapi Tanggal Laporan, Nama Toko, dan Nama SPM.', classes: 'red'});
-            resetSubmitButton(); // Aktifkan kembali tombol jika ada validasi error
+            resetSubmitButton(); 
             responseMessageDiv.innerHTML = '';
             return;
         }
@@ -157,7 +272,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const itemCards = salesItemsContainer.querySelectorAll('.sales-item-card'); 
             if (itemCards.length === 0) {
                 M.toast({html: 'Mohon tambahkan setidaknya satu item penjualan atau centang "Laporan No Sale".', classes: 'red'});
-                resetSubmitButton(); // Aktifkan kembali tombol jika ada validasi error
+                resetSubmitButton(); 
                 responseMessageDiv.innerHTML = '';
                 return;
             }
@@ -169,19 +284,19 @@ document.addEventListener('DOMContentLoaded', function() {
 
                     if (!category || !model || !qty || parseInt(qty) <= 0) {
                         M.toast({html: 'Mohon lengkapi semua detail item penjualan (Kategori, Model, Qty > 0).', classes: 'red'});
-                        resetSubmitButton(); // Aktifkan kembali tombol jika ada validasi error
+                        resetSubmitButton(); 
                         responseMessageDiv.innerHTML = '';
-                        throw new Error('Incomplete sales item data'); // Hentikan pemrosesan
+                        throw new Error('Incomplete sales item data'); 
                     }
                     salesItems.push({
                         category: category,
-                        model: model,
+                        model: model, 
                         qty: parseInt(qty)
                     });
                 });
             } catch (error) {
                 console.error("Validation error:", error.message);
-                return; // Stop execution if validation fails
+                return; 
             }
         }
 
@@ -194,45 +309,73 @@ document.addEventListener('DOMContentLoaded', function() {
             notes: notes
         };
 
-        console.log("Data siap dikirim (simulasi):", reportData);
+        console.log("Data siap dikirim:", reportData); 
 
-        // --- SIMULASI PENGIRIMAN DATA (GANTI DENGAN FETCH/AJAX KE BACKEND BARU NANTI) ---
-        setTimeout(() => {
-            M.toast({html: 'Laporan berhasil disimpan (simulasi)!', classes: 'green'});
-            responseMessageDiv.innerHTML = ''; // Hapus pesan proses
-            
-            // Sembunyikan form dan tampilkan pesan sukses
-            salesReportForm.classList.add('hidden');
-            successMessageSection.classList.remove('hidden');
+        try {
+            const response = await fetch(WEB_APP_URL, { 
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(reportData),
+                redirect: 'follow' 
+            });
 
-            // Reset form untuk penggunaan selanjutnya
-            salesReportForm.reset();
-            M.FormSelect.init(document.querySelectorAll('select')); // Re-init selects
-            M.Datepicker.getInstance(document.getElementById('reportDate')).setDate(null); // Clear datepicker
-            salesItemsContainer.innerHTML = ''; // Ganti ke salesItemsContainer
-            noSaleCheckbox.checked = false; // Uncheck no sale
-            salesDetailSection.style.display = 'block'; // Ensure sales section is visible
-            addSalesItemRow(); // Add one initial row
+            if (!response.ok) {
+                throw new Error(`Network response was not ok, status: ${response.status}`);
+            }
 
-            resetSubmitButton(); // Kembalikan tombol submit ke keadaan semula
-        }, 1500); // Simulasi delay 1.5 detik
-        // --- AKHIR SIMULASI ---
+            const result = await response.json();
 
-        // Di sini nanti Anda akan mengganti bagian setTimeout ini dengan panggilan AJAX (fetch API atau Axios)
-        // ke endpoint backend perantara Anda yang baru. Pastikan untuk memanggil resetSubmitButton()
-        // dan mengelola visibility salesReportForm/successMessageSection baik dalam .then() maupun .catch().
+            if (result.success) {
+                M.toast({html: 'Laporan berhasil disimpan!', classes: 'green'});
+                responseMessageDiv.innerHTML = ''; 
+                
+                salesReportForm.classList.add('hidden');
+                successMessageSection.classList.remove('hidden');
+
+                salesReportForm.reset();
+                M.FormSelect.init(document.querySelectorAll('select')); 
+                M.Datepicker.getInstance(document.getElementById('reportDate')).setDate(null); 
+                salesItemsContainer.innerHTML = ''; 
+                noSaleCheckbox.checked = false; 
+                salesDetailSection.style.display = 'block'; 
+                // addSalesItemRow(); // Ini akan dipanggil setelah fetchProdukKategoriData() di resetSubmitNewReport()
+
+                populateStoreDropdown(); 
+                populateSpmDropdown(''); 
+                document.getElementById('spmName').setAttribute('disabled', 'disabled'); 
+
+            } else {
+                M.toast({html: `Gagal menyimpan laporan: ${result.message}`, classes: 'red'});
+                responseMessageDiv.textContent = `Gagal: ${result.message}`;
+                responseMessageDiv.classList.add('red-text');
+            }
+        } catch (error) {
+            M.toast({html: `Kesalahan pengiriman laporan: ${error.message}`, classes: 'red'});
+            responseMessageDiv.textContent = `Kesalahan: ${error.message}. Cek koneksi atau konsol browser.`;
+            responseMessageDiv.classList.add('red-text');
+            console.error("Fetch error during form submission:", error);
+        } finally {
+            resetSubmitButton(); 
+        }
     });
 
-    // Listener untuk tombol "Kirim Laporan Baru"
+    // ====================================================================================
+    // LOGIKA UNTUK TOMBOL "Kirim Laporan Baru" & RESET TOMBOL SUBMIT
+    // ====================================================================================
     submitNewReportBtn.addEventListener('click', function() {
-        successMessageSection.classList.add('hidden'); // Sembunyikan pesan sukses
-        salesReportForm.classList.remove('hidden'); // Tampilkan form kembali
-        responseMessageDiv.innerHTML = ''; // Hapus pesan apa pun
+        successMessageSection.classList.add('hidden'); 
+        salesReportForm.classList.remove('hidden'); 
+        responseMessageDiv.innerHTML = ''; 
         responseMessageDiv.classList.remove('green-text', 'red-text', 'blue-text');
-        // Form sudah di-reset dari logic submit sebelumnya
+        
+        // Panggil addSalesItemRow() lagi setelah form di-reset dan data produk sudah dimuat
+        if (!noSaleCheckbox.checked && salesItemsContainer.children.length === 0) {
+            addSalesItemRow();
+        }
     });
 
-    // Fungsi helper untuk mereset tombol submit
     function resetSubmitButton() {
         submitReportBtn.disabled = false;
         submitReportBtn.innerHTML = 'Kirim Laporan <i class="material-icons right">send</i>';
