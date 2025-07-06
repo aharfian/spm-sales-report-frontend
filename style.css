@@ -85,3 +85,68 @@ table.striped > tbody > tr:nth-child(odd) {
 #toast-container {
   z-index: 9999;
 }
+
+/* New utility class for hiding elements */
+.hidden {
+    display: none !important;
+}
+
+/* Optional: Animation for submit button while processing */
+.btn.pulse {
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(38, 166, 154, 0.4);
+    }
+    70% {
+        box-shadow: 0 0 0 10px rgba(38, 166, 154, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(38, 166, 154, 0);
+    }
+}
+
+/* Penyesuaian untuk Tampilan Mobile (Layar <= 600px) */
+@media (max-width: 600px) {
+    /* Kurangi padding pada sel tabel agar lebih ringkas */
+    table.striped th,
+    table.striped td {
+        padding: 10px 5px !important; /* Padding lebih kecil */
+        vertical-align: top; /* Pastikan konten di atas sel jika ada banyak baris */
+    }
+
+    /* Pastikan select dan input di dalam tabel mengambil lebar penuh sel */
+    table.striped .input-field,
+    table.striped select {
+        width: 100% !important;
+        margin-top: 0;
+        margin-bottom: 0;
+    }
+
+    /* Sesuaikan tampilan select dropdown Materialize agar tidak terpotong */
+    table.striped .select-wrapper input.select-dropdown {
+        margin-bottom: 0 !important; /* Hapus margin bawah default Materialize */
+        padding-left: 0 !important; /* Hapus padding kiri default */
+        padding-right: 0 !important; /* Hapus padding kanan default */
+        min-height: 35px; /* Beri tinggi minimum agar tidak terlalu pendek */
+        line-height: 35px; /* Sesuaikan line-height */
+    }
+
+    /* Beri lebar minimum pada konten dropdown yang muncul agar tidak terlalu sempit */
+    .dropdown-content {
+        min-width: 150px !important; /* Lebar minimum untuk daftar dropdown */
+    }
+
+    /* Sesuaikan ukuran font untuk tombol kecil di dalam tabel (opsional) */
+    .btn-floating.remove-item-btn {
+        width: 30px;
+        height: 30px;
+        line-height: 30px;
+        font-size: 1rem;
+    }
+    .btn-floating.remove-item-btn i {
+        line-height: 30px;
+    }
+}
