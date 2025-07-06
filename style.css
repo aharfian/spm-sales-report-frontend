@@ -65,15 +65,8 @@ select:focus {
     margin: 20px 0;
 }
 
-/* Default table styling for larger screens */
-table.responsive-table th,
-table.responsive-table td {
-    padding: 10px 15px;
-}
-
-table.striped > tbody > tr:nth-child(odd) {
-    background-color: #e3f2fd; /* Warna biru muda untuk baris ganjil */
-}
+/* HAPUS SEMUA GAYA TABEL RESPONSIF SEBELUMNYA KARENA KITA TIDAK LAGI MENGGUNAKAN TABEL */
+/* Hapus blok media query @media (max-width: 600px) yang lama untuk tabel */
 
 /* Custom styles for Materialize dropdowns that sometimes overflow */
 .dropdown-content {
@@ -109,102 +102,45 @@ table.striped > tbody > tr:nth-child(odd) {
     }
 }
 
+/* --- GAYA BARU UNTUK SALES ITEM CARD (MIRIP GOOGLE FORM) --- */
+.sales-item-card {
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    margin-bottom: 20px; /* Jarak antar kartu item */
+    padding: 15px;
+    background-color: #ffffff;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.08); /* Sedikit bayangan */
+}
 
-/* --- PENYESUAIAN UNTUK TAMPILAN MOBILE: TABEL STACK KE BAWAH --- */
-@media (max-width: 600px) {
-    /* Sembunyikan thead (header tabel) secara visual namun tetap aksesibel */
-    #salesDetailSection table thead {
-        border: none;
-        clip: rect(0 0 0 0);
-        height: 1px;
-        margin: -1px;
-        overflow: hidden;
-        padding: 0;
-        position: absolute;
-        width: 1px;
-    }
+/* Pastikan input-field di dalam sales-item-card punya margin yang pas */
+.sales-item-card .input-field {
+    margin-bottom: 15px; /* Jarak antar input field di dalam kartu */
+    margin-top: 0;
+}
 
-    /* Jadikan tabel, tbody, dan setiap baris tr sebagai blok */
-    #salesDetailSection table,
-    #salesDetailSection table tbody,
-    #salesDetailSection table tr {
-        display: block;
-        width: 100%;
-    }
+/* Sesuaikan ukuran font untuk judul item baru */
+.sales-item-card .card-title {
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 1.1rem !important;
+    color: #424242;
+}
 
-    /* Beri styling seperti kartu untuk setiap baris item penjualan */
-    #salesDetailSection table tr {
-        margin-bottom: 15px;
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        padding: 10px;
-        background-color: #fff; /* Latar belakang putih untuk setiap kartu */
-        box-shadow: 0 2px 4px rgba(0,0,0,0.05); /* Sedikit bayangan */
-    }
+/* Pastikan Materialize labels dan dropdown input tampil dengan baik */
+.sales-item-card .input-field label {
+    font-size: 0.9rem;
+}
 
-    /* Jadikan setiap sel td sebagai blok */
-    #salesDetailSection table td {
-        display: block;
-        text-align: right; /* Rata kanan nilai */
-        padding: 8px 10px !important; /* Sesuaikan padding */
-        border-bottom: 1px solid #eee; /* Garis pemisah antar field */
-    }
+.sales-item-card .select-wrapper input.select-dropdown {
+    margin-bottom: 0 !important;
+}
 
-    /* Hapus garis pemisah dari sel terakhir di setiap baris */
-    #salesDetailSection table td:last-child {
-        border-bottom: 0;
-    }
+/* Penyesuaian tombol hapus di dalam kartu item */
+.sales-item-card .remove-item-btn {
+    margin-top: 5px; /* Sesuaikan posisi vertikal */
+}
 
-    /* Gunakan pseudo-element ::before untuk menampilkan nama kolom */
-    #salesDetailSection table td::before {
-        content: attr(data-label); /* Mengambil teks dari atribut data-label */
-        float: left;
-        font-weight: bold;
-        text-transform: uppercase;
-        margin-right: 10px; /* Spasi antara label dan nilai */
-        color: #555;
-    }
-
-    /* Penyesuaian elemen Materialize di dalam sel yang ditumpuk */
-    #salesDetailSection table td .input-field,
-    #salesDetailSection table td select,
-    #salesDetailSection table td .select-wrapper {
-        width: auto !important; /* Biarkan konten menyesuaikan lebar */
-        display: inline-block; /* Agar bisa sebaris dengan label dari ::before */
-        vertical-align: middle; /* Sejajarkan secara vertikal */
-        margin-top: 0;
-        margin-bottom: 0;
-    }
-
-    #salesDetailSection table td .select-wrapper input.select-dropdown {
-        width: auto !important;
-        display: inline-block;
-        padding-left: 0 !important;
-        text-align: right; /* Rata kanan nilai di dalam select */
-    }
-
-    /* Pastikan konten dropdown yang muncul tidak melebihi layar */
-    .dropdown-content {
-        min-width: 180px !important; /* Lebar minimum untuk daftar dropdown */
-        max-width: 90vw !important; /* Cegah melampaui lebar layar */
-        left: 5% !important; /* Posisikan di tengah */
-        right: 5% !important; /* Posisikan di tengah */
-    }
-
-    /* Posisi tombol aksi (remove) */
-    #salesDetailSection table td .remove-item-btn {
-        float: right; /* Pindahkan tombol ke kanan */
-        margin-top: -5px; /* Sesuaikan posisi vertikal */
-    }
-
-    /* Sesuaikan ukuran font untuk tombol kecil di dalam tabel */
-    .btn-floating.remove-item-btn {
-        width: 30px;
-        height: 30px;
-        line-height: 30px;
-        font-size: 1rem;
-    }
-    .btn-floating.remove-item-btn i {
-        line-height: 30px;
-    }
+/* Optional: Untuk tombol tambah item di bawah form */
+.add-item-btn {
+    margin-top: 20px;
 }
