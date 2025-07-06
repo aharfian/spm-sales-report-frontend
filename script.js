@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // KONFIGURASI FRONTEND
     // ====================================================================================
     // GANTI INI DENGAN URL WEB APP GOOGLE APPS SCRIPT ANDA!
-    const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycby6LAQbLUI6vt1BATqJyU9IcYVoxGuo68lI6j9bqu8fG2iZpvs7slNd0_dULvpYrUQ/exec'; 
+    const WEB_APP_URL = 'rahasia'; 
 
     const salesReportForm = document.getElementById('salesReportForm');
     const salesItemsContainer = document.getElementById('salesItemsContainer'); 
