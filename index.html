@@ -18,18 +18,15 @@
         <div id="loadingSection" class="center-align" style="margin-top: 20px;">
           <div class="preloader-wrapper big active">
             <div class="spinner-layer spinner-blue-only">
-              <div class="circle-clipper left">
-                <div class="circle"></div>
-              </div>
-              <div class="gap-patch">
-                <div class="circle"></div>
-              </div>
-              <div class="circle-clipper right">
-                <div class="circle"></div>
-              </div>
+              <div class="circle-clipper left"><div class="circle"></div></div>
+              <div class="gap-patch"><div class="circle"></div></div>
+              <div class="circle-clipper right"><div class="circle"></div></div>
             </div>
           </div>
-          <p style="margin-top: 16px;">Memuat data toko dan produk...</p>
+          <p class="pulse-text" style="margin-top: 16px;">Memuat data toko dan produk...</p>
+          <p id="delayNotice" class="orange-text text-darken-2 hidden" style="margin-top: 12px; font-weight: 500;">
+            Mohon tunggu, kemungkinan server sedang idle atau trafik sedang tinggi...
+          </p>
         </div>
 
         <!-- 🔧 Form Laporan -->
