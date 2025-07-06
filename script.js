@@ -8,7 +8,8 @@ document.addEventListener('DOMContentLoaded', function() {
     M.textareaAutoResize(document.getElementById('notes'));
 
     const salesReportForm = document.getElementById('salesReportForm');
-    const salesItemsTableBody = document.getElementById('salesItemsTableBody');
+    // GANTI: salesItemsTableBody menjadi salesItemsContainer
+    const salesItemsContainer = document.getElementById('salesItemsContainer'); 
     const noSaleCheckbox = document.getElementById('noSaleCheckbox');
     const salesDetailSection = document.getElementById('salesDetailSection');
     const addSalesItemBtn = document.getElementById('addSalesItemBtn');
@@ -26,42 +27,56 @@ document.addEventListener('DOMContentLoaded', function() {
     };
     // --- AKHIR DUMMY DATA ---
 
-    // Function to add a new sales item row
+    // Function to add a new sales item row (DIUBAH TOTAL UNTUK LAYOUT DIV)
     function addSalesItemRow() {
-        const row = document.createElement('tr');
-        // PENTING: Tambahkan atribut data-label pada setiap <td>
-        row.innerHTML = `
-            <td data-label="Category">
-                <select class="category-select">
-                    <option value="" disabled selected>Pilih Kategori</option>
-                    ${Object.keys(categoryToKatabanMap).map(category => `<option value="${category}">${category}</option>`).join('')}
-                </select>
-            </td>
-            <td data-label="Kataban (Model)">
-                <select class="kataban-select" disabled>
-                    <option value="" disabled selected>Pilih Model</option>
-                </select>
-            </td>
-            <td data-label="Qty">
-                <div class="input-field">
-                    <input type="number" class="qty-input" min="1" value="1">
+        const itemCard = document.createElement('div');
+        itemCard.classList.add('sales-item-card', 'card', 'mb-3'); // Tambahkan kelas card untuk styling seperti kartu
+        itemCard.innerHTML = `
+            <div class="card-content">
+                <span class="card-title" style="font-size: 1.2rem; margin-bottom: 15px;">Item Penjualan Baru</span>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <select class="category-select">
+                            <option value="" disabled selected>Pilih Kategori</option>
+                            ${Object.keys(categoryToKatabanMap).map(category => `<option value="${category}">${category}</option>`).join('')}
+                        </select>
+                        <label>Kategori</label>
+                    </div>
                 </div>
-            </td>
-            <td data-label="Aksi">
-                <button type="button" class="btn-floating waves-effect waves-light red remove-item-btn">
-                    <i class="material-icons">remove</i>
-                </button>
-            </td>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <select class="kataban-select" disabled>
+                            <option value="" disabled selected>Pilih Model</option>
+                        </select>
+                        <label>Kataban (Model)</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input type="number" class="qty-input" min="1" value="1">
+                        <label>Qty</label>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col s12 right-align">
+                        <button type="button" class="btn waves-effect waves-light red remove-item-btn">
+                            Hapus Item
+                            <i class="material-icons right">delete</i>
+                        </button>
+                    </div>
+                </div>
+            </div>
         `;
-        salesItemsTableBody.appendChild(row);
+        salesItemsContainer.appendChild(itemCard); // Append ke container baru
 
-        // Re-initialize Materialize selects for the new row
-        M.FormSelect.init(row.querySelectorAll('select'));
+        // Re-initialize Materialize selects for the new item card
+        M.FormSelect.init(itemCard.querySelectorAll('select'));
+        M.updateTextFields(); // Perbarui tampilan input fields
 
         // Add event listener for category select change
-        row.querySelector('.category-select').addEventListener('change', function() {
+        itemCard.querySelector('.category-select').addEventListener('change', function() {
             const selectedCategory = this.value;
-            const katabanSelect = this.closest('tr').querySelector('.kataban-select');
+            const katabanSelect = itemCard.querySelector('.kataban-select');
             
             // Clear existing options
             katabanSelect.innerHTML = '<option value="" disabled selected>Pilih Model</option>';
@@ -82,8 +97,8 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 
         // Add event listener for remove button
-        row.querySelector('.remove-item-btn').addEventListener('click', function() {
-            row.remove();
+        itemCard.querySelector('.remove-item-btn').addEventListener('click', function() {
+            itemCard.remove();
         });
     }
 
@@ -100,11 +115,11 @@ document.addEventListener('DOMContentLoaded', function() {
         if (this.checked) {
             salesDetailSection.style.display = 'none';
             // Clear existing rows if no sale is checked
-            salesItemsTableBody.innerHTML = ''; 
+            salesItemsContainer.innerHTML = ''; // Ganti ke salesItemsContainer
         } else {
             salesDetailSection.style.display = 'block';
             // Add one default row if re-enabled and no rows exist
-            if (salesItemsTableBody.children.length === 0) {
+            if (salesItemsContainer.children.length === 0) { // Ganti ke salesItemsContainer
                 addSalesItemRow();
             }
         }
@@ -140,18 +155,19 @@ document.addEventListener('DOMContentLoaded', function() {
 
         let salesItems = [];
         if (!isNoSale) {
-            const rows = salesItemsTableBody.querySelectorAll('tr');
-            if (rows.length === 0) {
+            // GANTI: rows dari tr menjadi sales-item-card div
+            const itemCards = salesItemsContainer.querySelectorAll('.sales-item-card'); 
+            if (itemCards.length === 0) {
                 M.toast({html: 'Mohon tambahkan setidaknya satu item penjualan atau centang "Laporan No Sale".', classes: 'red'});
                 resetSubmitButton(); // Aktifkan kembali tombol jika ada validasi error
                 responseMessageDiv.innerHTML = '';
                 return;
             }
             try {
-                rows.forEach(row => {
-                    const category = row.querySelector('.category-select').value;
-                    const model = row.querySelector('.kataban-select').value;
-                    const qty = row.querySelector('.qty-input').value;
+                itemCards.forEach(card => {
+                    const category = card.querySelector('.category-select').value;
+                    const model = card.querySelector('.kataban-select').value;
+                    const qty = card.querySelector('.qty-input').value;
 
                     if (!category || !model || !qty || parseInt(qty) <= 0) {
                         M.toast({html: 'Mohon lengkapi semua detail item penjualan (Kategori, Model, Qty > 0).', classes: 'red'});
@@ -195,7 +211,7 @@ document.addEventListener('DOMContentLoaded', function() {
             salesReportForm.reset();
             M.FormSelect.init(document.querySelectorAll('select')); // Re-init selects
             M.Datepicker.getInstance(document.getElementById('reportDate')).setDate(null); // Clear datepicker
-            salesItemsTableBody.innerHTML = ''; // Clear sales items
+            salesItemsContainer.innerHTML = ''; // Ganti ke salesItemsContainer
             noSaleCheckbox.checked = false; // Uncheck no sale
             salesDetailSection.style.display = 'block'; // Ensure sales section is visible
             addSalesItemRow(); // Add one initial row
