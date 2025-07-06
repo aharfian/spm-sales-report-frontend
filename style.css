@@ -177,3 +177,19 @@ select:focus {
     padding-left: 0.75rem !important;
     padding-right: 0.75rem !important;
 }
+
+.pulse-text {
+  animation: pulseText 1.5s infinite;
+  font-weight: 500;
+  color: #2196f3;
+}
+
+@keyframes pulseText {
+  0% { opacity: 0.3; }
+  50% { opacity: 1; }
+  100% { opacity: 0.3; }
+}
+
+.hidden {
+  display: none;
+}
