@@ -4,9 +4,6 @@ document.addEventListener('DOMContentLoaded', function() {
     M.Datepicker.init(document.querySelectorAll('.datepicker'), {
         format: 'yyyy-mm-dd',
         autoClose: true,
-        // Set first day of week to Monday if needed
-        // firstDay: 1, 
-        // i18n: { /* You can add Indonesian locale here if needed */ }
     });
     M.textareaAutoResize(document.getElementById('notes'));
 
@@ -16,9 +13,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const salesDetailSection = document.getElementById('salesDetailSection');
     const addSalesItemBtn = document.getElementById('addSalesItemBtn');
     const responseMessageDiv = document.getElementById('responseMessage');
+    const submitReportBtn = document.getElementById('submitReportBtn'); // Tombol submit
+    const successMessageSection = document.getElementById('successMessageSection'); // Bagian pesan sukses
+    const submitNewReportBtn = document.getElementById('submitNewReportBtn'); // Tombol Kirim Laporan Baru
 
     // --- DUMMY DATA UNTUK DEMONSTRASI FRONTEND DINAMIS ---
-    // Di backend nyata, data ini akan diambil dari Google Sheet
     const categoryToKatabanMap = {
         "Handphone": ["iPhone 15 Pro Max", "Samsung Galaxy S24 Ultra", "Xiaomi 14", "Oppo Find X7"],
         "Aksesoris": ["Earphone Bluetooth", "Power Bank 10000mAh", "Case HP", "Charger Fast Charging"],
@@ -117,6 +116,14 @@ document.addEventListener('DOMContentLoaded', function() {
         responseMessageDiv.innerHTML = ''; // Clear previous messages
         responseMessageDiv.classList.remove('green-text', 'red-text');
 
+        // --- MENCEGAH DOUBLE SUBMISSION & TAMPILKAN LOADING ---
+        submitReportBtn.disabled = true; // Nonaktifkan tombol
+        submitReportBtn.innerHTML = 'Memproses... <i class="material-icons right">sync</i>'; // Ubah teks tombol
+        submitReportBtn.classList.add('pulse'); // Tambahkan animasi (dari style.css)
+        responseMessageDiv.textContent = 'Laporan Anda sedang diproses (simulasi)...';
+        responseMessageDiv.classList.add('blue-text');
+        // --- AKHIR PENCEGAHAN DOUBLE SUBMISSION ---
+
         const reportDate = document.getElementById('reportDate').value;
         const storeName = document.getElementById('storeName').value;
         const spmName = document.getElementById('spmName').value;
@@ -125,6 +132,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
         if (!reportDate || !storeName || !spmName) {
             M.toast({html: 'Mohon lengkapi Tanggal Laporan, Nama Toko, dan Nama SPM.', classes: 'red'});
+            resetSubmitButton(); // Aktifkan kembali tombol jika ada validasi error
+            responseMessageDiv.innerHTML = '';
             return;
         }
 
@@ -133,23 +142,32 @@ document.addEventListener('DOMContentLoaded', function() {
             const rows = salesItemsTableBody.querySelectorAll('tr');
             if (rows.length === 0) {
                 M.toast({html: 'Mohon tambahkan setidaknya satu item penjualan atau centang "Laporan No Sale".', classes: 'red'});
+                resetSubmitButton(); // Aktifkan kembali tombol jika ada validasi error
+                responseMessageDiv.innerHTML = '';
                 return;
             }
-            rows.forEach(row => {
-                const category = row.querySelector('.category-select').value;
-                const model = row.querySelector('.kataban-select').value;
-                const qty = row.querySelector('.qty-input').value;
+            try {
+                rows.forEach(row => {
+                    const category = row.querySelector('.category-select').value;
+                    const model = row.querySelector('.kataban-select').value;
+                    const qty = row.querySelector('.qty-input').value;
 
-                if (!category || !model || !qty || parseInt(qty) <= 0) {
-                    M.toast({html: 'Mohon lengkapi semua detail item penjualan (Kategori, Model, Qty > 0).', classes: 'red'});
-                    throw new Error('Incomplete sales item data'); // Stop processing
-                }
-                salesItems.push({
-                    category: category,
-                    model: model,
-                    qty: parseInt(qty)
+                    if (!category || !model || !qty || parseInt(qty) <= 0) {
+                        M.toast({html: 'Mohon lengkapi semua detail item penjualan (Kategori, Model, Qty > 0).', classes: 'red'});
+                        resetSubmitButton(); // Aktifkan kembali tombol jika ada validasi error
+                        responseMessageDiv.innerHTML = '';
+                        throw new Error('Incomplete sales item data'); // Hentikan pemrosesan
+                    }
+                    salesItems.push({
+                        category: category,
+                        model: model,
+                        qty: parseInt(qty)
+                    });
                 });
-            });
+            } catch (error) {
+                console.error("Validation error:", error.message);
+                return; // Stop execution if validation fails
+            }
         }
 
         const reportData = {
@@ -164,66 +182,45 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log("Data siap dikirim (simulasi):", reportData);
 
         // --- SIMULASI PENGIRIMAN DATA (GANTI DENGAN FETCH/AJAX KE BACKEND BARU NANTI) ---
-        responseMessageDiv.textContent = 'Laporan Anda sedang diproses (simulasi)...';
-        responseMessageDiv.classList.add('blue-text');
-
-        // Simulasi proses async
         setTimeout(() => {
-            if (isNoSale) {
-                M.toast({html: 'Laporan No Sale berhasil disimpan (simulasi)!', classes: 'green'});
-                responseMessageDiv.textContent = 'Laporan No Sale berhasil disimpan (simulasi)!';
-            } else {
-                M.toast({html: 'Laporan penjualan berhasil disimpan (simulasi)!', classes: 'green'});
-                responseMessageDiv.textContent = 'Laporan penjualan berhasil disimpan (simulasi)!';
-            }
-            responseMessageDiv.classList.add('green-text');
+            M.toast({html: 'Laporan berhasil disimpan (simulasi)!', classes: 'green'});
+            responseMessageDiv.innerHTML = ''; // Hapus pesan proses
             
-            // Reset form
+            // Sembunyikan form dan tampilkan pesan sukses
+            salesReportForm.classList.add('hidden');
+            successMessageSection.classList.remove('hidden');
+
+            // Reset form untuk penggunaan selanjutnya
             salesReportForm.reset();
             M.FormSelect.init(document.querySelectorAll('select')); // Re-init selects
             M.Datepicker.getInstance(document.getElementById('reportDate')).setDate(null); // Clear datepicker
             salesItemsTableBody.innerHTML = ''; // Clear sales items
+            noSaleCheckbox.checked = false; // Uncheck no sale
             salesDetailSection.style.display = 'block'; // Ensure sales section is visible
             addSalesItemRow(); // Add one initial row
+
+            resetSubmitButton(); // Kembalikan tombol submit ke keadaan semula
         }, 1500); // Simulasi delay 1.5 detik
         // --- AKHIR SIMULASI ---
 
         // Di sini nanti Anda akan mengganti bagian setTimeout ini dengan panggilan AJAX (fetch API atau Axios)
-        // ke endpoint backend perantara Anda yang baru, yang akan mengirim data ke Google Sheets.
-        // Contoh:
-        /*
-        fetch('URL_BACKEND_PERANTARA_ANDA', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(reportData)
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                M.toast({html: data.message, classes: 'green'});
-                responseMessageDiv.textContent = data.message;
-                responseMessageDiv.classList.add('green-text');
-                // Reset form
-                salesReportForm.reset();
-                M.FormSelect.init(document.querySelectorAll('select'));
-                M.Datepicker.getInstance(document.getElementById('reportDate')).setDate(null);
-                salesItemsTableBody.innerHTML = '';
-                salesDetailSection.style.display = 'block';
-                addSalesItemRow();
-            } else {
-                M.toast({html: 'Gagal menyimpan laporan: ' + data.message, classes: 'red'});
-                responseMessageDiv.textContent = 'Gagal menyimpan laporan: ' + data.message;
-                responseMessageDiv.classList.add('red-text');
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            M.toast({html: 'Terjadi kesalahan jaringan atau server: ' + error.message, classes: 'red'});
-            responseMessageDiv.textContent = 'Terjadi kesalahan jaringan atau server.';
-            responseMessageDiv.classList.add('red-text');
-        });
-        */
+        // ke endpoint backend perantara Anda yang baru. Pastikan untuk memanggil resetSubmitButton()
+        // dan mengelola visibility salesReportForm/successMessageSection baik dalam .then() maupun .catch().
     });
+
+    // Listener untuk tombol "Kirim Laporan Baru"
+    submitNewReportBtn.addEventListener('click', function() {
+        successMessageSection.classList.add('hidden'); // Sembunyikan pesan sukses
+        salesReportForm.classList.remove('hidden'); // Tampilkan form kembali
+        responseMessageDiv.innerHTML = ''; // Hapus pesan apa pun
+        responseMessageDiv.classList.remove('green-text', 'red-text', 'blue-text');
+        // Form sudah di-reset dari logic submit sebelumnya
+    });
+
+    // Fungsi helper untuk mereset tombol submit
+    function resetSubmitButton() {
+        submitReportBtn.disabled = false;
+        submitReportBtn.innerHTML = 'Kirim Laporan <i class="material-icons right">send</i>';
+        submitReportBtn.classList.remove('pulse');
+    }
 });
