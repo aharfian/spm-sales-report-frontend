@@ -87,52 +87,82 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 
   function addSalesItemRow() {
-    const itemCard = document.createElement('div');
-    itemCard.className = 'sales-item-card card mb-3';
-    itemCard.innerHTML = `
-      <div class="card-content">
-        <span class="card-title" style="font-size: 1.2rem">Item Penjualan Baru</span>
-        <div class="input-field">
-          <select class="category-select">
-            <option value="" disabled selected>Pilih Kategori</option>
-            ${Object.keys(categoryToKatabanMap).map((cat) => `<option value="${cat}">${cat}</option>`).join('')}
-          </select>
-          <label>Kategori</label>
-        </div>
-        <div class="input-field">
-          <select class="kataban-select" disabled>
-            <option value="" disabled selected>Pilih Model</option>
-          </select>
-          <label>Kataban (Model)</label>
-        </div>
-        <div class="input-field">
-          <input type="number" class="qty-input" min="1" value="1">
-          <label>Qty</label>
-        </div>
-        <div class="right-align">
-          <button type="button" class="btn red remove-item-btn">
-            Hapus Item<i class="material-icons right">delete</i>
-          </button>
-        </div>
-      </div>
-    `;
-    salesItemsContainer.appendChild(itemCard);
-    M.FormSelect.init(itemCard.querySelectorAll('select'));
-    itemCard.querySelector('.category-select').addEventListener('change', function () {
-      const katabanSelect = itemCard.querySelector('.kataban-select');
-      katabanSelect.innerHTML = '<option value="" disabled selected>Pilih Model</option>';
-      if (categoryToKatabanMap[this.value]) {
-        [...new Set(categoryToKatabanMap[this.value])].forEach((model) => {
-          const opt = document.createElement('option');
-          opt.value = model;
-          opt.textContent = model;
-          katabanSelect.appendChild(opt);
-        });
-        katabanSelect.removeAttribute('disabled');
-        M.FormSelect.init(katabanSelect);
-      }
-    });
-    itemCard.querySelector('.remove-item-btn').addEventListener('click', () => itemCard.remove());
+      const uniqueId = `qty-${Date.now()}`;
+      const itemCard = document.createElement('div');
+      itemCard.classList.add('sales-item-card', 'card', 'mb-3');
+      itemCard.innerHTML = `
+          <div class="card-content">
+              <span class="card-title" style="font-size: 1.2rem;">Item Penjualan Baru</span>
+  
+              <div class="row">
+                  <div class="input-field col s12">
+                      <select class="category-select">
+                          <option value="" disabled selected>Pilih Kategori</option>
+                          ${Object.keys(categoryToKatabanMap).map(category => `<option value="${category}">${category}</option>`).join('')}
+                      </select>
+                      <label>Kategori</label>
+                  </div>
+              </div>
+  
+              <div class="row">
+                  <div class="input-field col s12">
+                      <select class="kataban-select" disabled>
+                          <option value="" disabled selected>Pilih Model</option>
+                      </select>
+                      <label>Kataban (Model)</label>
+                  </div>
+              </div>
+  
+              <div class="row">
+                  <div class="input-field col s12">
+                      <input type="number" class="qty-input validate" min="1" value="1" id="${uniqueId}">
+                      <label for="${uniqueId}">Qty</label>
+                  </div>
+              </div>
+  
+              <div class="row">
+                  <div class="col s12 right-align">
+                      <button type="button" class="btn red lighten-1 waves-effect waves-light remove-item-btn">
+                          Hapus Item
+                          <i class="material-icons right">delete</i>
+                      </button>
+                  </div>
+              </div>
+          </div>
+      `;
+      salesItemsContainer.appendChild(itemCard);
+  
+      // Inisialisasi ulang Materialize
+      M.FormSelect.init(itemCard.querySelectorAll('select'));
+      M.updateTextFields();
+  
+      // Populate dropdown model saat kategori dipilih
+      itemCard.querySelector('.category-select').addEventListener('change', function () {
+          const selectedCategory = this.value;
+          const katabanSelect = itemCard.querySelector('.kataban-select');
+  
+          katabanSelect.innerHTML = '<option value="" disabled selected>Pilih Model</option>';
+  
+          if (selectedCategory && categoryToKatabanMap[selectedCategory]) {
+              const uniqueKatabans = [...new Set(categoryToKatabanMap[selectedCategory])];
+              uniqueKatabans.forEach(model => {
+                  const option = document.createElement('option');
+                  option.value = model;
+                  option.textContent = model;
+                  katabanSelect.appendChild(option);
+              });
+              katabanSelect.removeAttribute('disabled');
+          } else {
+              katabanSelect.setAttribute('disabled', 'disabled');
+          }
+  
+          M.FormSelect.init(katabanSelect);
+      });
+  
+      // Tombol hapus item
+      itemCard.querySelector('.remove-item-btn').addEventListener('click', function () {
+          itemCard.remove();
+      });
   }
 
   addSalesItemBtn.addEventListener('click', addSalesItemRow);
