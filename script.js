@@ -224,6 +224,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   submitReportBtn.addEventListener('click', async function (e) {
     e.preventDefault();
+  
     const reportDate = document.getElementById('reportDate').value;
     const storeName = document.getElementById('storeName').value;
     const spmName = document.getElementById('spmName').value;
@@ -231,38 +232,50 @@ document.addEventListener('DOMContentLoaded', function () {
     const isNoSale = noSaleCheckbox.checked;
     const reportItems = [];
     const itemCards = salesItemsContainer.querySelectorAll('.sales-item-card');
-
-    if (!reportDate || !storeName || !spmName) return M.toast({ html: 'Lengkapi data wajib!', classes: 'red' });
-    if (!isNoSale && itemCards.length === 0) return M.toast({ html: 'Tambahkan minimal 1 item atau centang No Sale', classes: 'red' });
-
-    const alreadyReported = await checkIfAlreadyReported(reportDate, storeName, spmName);
-    if (alreadyReported && !notes.toLowerCase().includes('revisi')) {
-      return M.toast({ html: 'Karena ini revisi, wajib isi catatan dengan kata "revisi"', classes: 'orange darken-3' });
+  
+    if (!reportDate || !storeName || !spmName) {
+      return M.toast({ html: 'Lengkapi data wajib!', classes: 'red' });
     }
-
-    if (!isNoSale) {
-      for (const card of itemCards) {
-        const category = card.querySelector('.category-select').value;
-        const model = card.querySelector('.kataban-select').value;
-        const qty = card.querySelector('.qty-input').value;
-        if (!category || !model || qty <= 0) return M.toast({ html: 'Lengkapi semua item dengan benar', classes: 'red' });
-        reportItems.push({ category, model, qty: parseInt(qty) });
-      }
+    if (!isNoSale && itemCards.length === 0) {
+      return M.toast({ html: 'Tambahkan minimal 1 item atau centang No Sale', classes: 'red' });
     }
-
+  
+    // 💡 Langsung aktifkan spinner animasi dan disable tombol
     submitReportBtn.disabled = true;
     submitReportBtn.innerHTML = 'Mengirim... <i class="material-icons right">send</i>';
     submitReportBtn.classList.add('pulse');
     responseMessageDiv.textContent = 'Mengirim laporan...';
     responseMessageDiv.className = 'blue-text center-align';
-
+  
     try {
+      // ✅ Tampilkan toast "Mengecek laporan sebelumnya..."
+      M.toast({ html: 'Mengecek laporan sebelumnya...', classes: 'blue lighten-2' });
+  
+      const exists = await checkIfAlreadyReported(reportDate, storeName, spmName);
+  
+      if (exists && !notes.trim().toLowerCase().includes('revisi')) {
+        throw new Error('Data sudah pernah dikirim. Tambahkan kata "Revisi" pada catatan.');
+      }
+  
+      if (!isNoSale) {
+        for (const card of itemCards) {
+          const category = card.querySelector('.category-select').value;
+          const model = card.querySelector('.kataban-select').value;
+          const qty = card.querySelector('.qty-input').value;
+          if (!category || !model || qty <= 0) {
+            throw new Error('Lengkapi semua item penjualan dengan benar');
+          }
+          reportItems.push({ category, model, qty: parseInt(qty) });
+        }
+      }
+  
       const res = await fetch(WEB_APP_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ reportDate, storeName, spmName, isNoSale, notes, salesItems: reportItems }),
       });
       const result = await res.json();
+  
       if (result.success) {
         M.toast({ html: 'Laporan berhasil!', classes: 'green' });
         salesReportForm.classList.add('hidden');
@@ -276,7 +289,7 @@ document.addEventListener('DOMContentLoaded', function () {
         throw new Error(result.message);
       }
     } catch (err) {
-      M.toast({ html: 'Error: ' + err.message, classes: 'red' });
+      M.toast({ html: '❌ ' + err.message, classes: 'red' });
       responseMessageDiv.textContent = 'Gagal mengirim laporan';
       responseMessageDiv.className = 'red-text center-align';
     } finally {
