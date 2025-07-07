@@ -354,3 +354,8 @@ input[type="checkbox"] {
     display: inline-block; /* Pastikan caret Materialize muncul */
     vertical-align: middle;
 }
+
+/*toast rata tengah (semua) */
+#toast-container .toast {
+  text-align: center !important;
+}
