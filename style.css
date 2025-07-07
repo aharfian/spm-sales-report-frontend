@@ -1,81 +1,207 @@
 body {
-  background-color: #f5f5f5;
+    background-color: #f5f5f5; /* Warna latar belakang abu-abu muda */
 }
 
 .container {
-  max-width: 720px;
-  margin: 30px auto;
+    margin-top: 30px;
+    margin-bottom: 30px;
 }
 
-/* Utility spacing */
-.mt-3 { margin-top: 1.5rem !important; }
-.mb-3 { margin-bottom: 1.5rem !important; }
-.pt-3 { padding-top: 1.5rem !important; }
-.pb-3 { padding-bottom: 1.5rem !important; }
-.p-3 { padding: 1.5rem !important; }
-
+/* Pastikan semua .card memiliki padding yang konsisten */
 .card {
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    padding: 20px; /* Padding default untuk semua card */
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
 .card-content {
-  padding: 20px;
+    padding: 20px; /* Tambahkan atau pastikan padding ini ada untuk konten dalam card */
 }
 
 .card-title {
-  font-weight: 600;
-  margin-bottom: 20px;
-  color: #424242;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: #424242;
 }
 
 .input-field label {
-  color: #2196f3;
+    color: #2196f3; /* Warna label biru */
 }
 
 .input-field input[type=text]:focus + label,
 .input-field input[type=number]:focus + label,
 .input-field textarea:focus + label {
-  color: #2196f3 !important;
+    color: #2196f3 !important;
 }
 
 .input-field input[type=text]:focus,
 .input-field input[type=number]:focus,
 .input-field textarea:focus {
-  border-bottom: 1px solid #2196f3 !important;
-  box-shadow: 0 1px 0 0 #2196f3 !important;
+    border-bottom: 1px solid #2196f3 !important;
+    box-shadow: 0 1px 0 0 #2196f3 !important;
 }
 
 select:focus {
-  outline: none !important;
+    outline: none !important;
 }
 
 .btn {
-  border-radius: 4px;
+    border-radius: 4px;
 }
 
 .btn i {
-  font-size: 1.2rem;
-  vertical-align: middle;
+    font-size: 1.2rem;
+    vertical-align: middle;
+}
+
+.mt-3 {
+    margin-top: 1.5rem !important;
+}
+
+.mb-3 {
+    margin-bottom: 1.5rem !important;
+}
+
+.p-3 {
+    padding: 1.5rem !important; /* Ini adalah utilitas padding, pastikan konsisten */
 }
 
 .divider {
-  margin: 20px 0;
+    margin: 20px 0;
 }
 
-/* Dropdown overflow fix */
+/* Custom styles for Materialize dropdowns that sometimes overflow */
 .dropdown-content {
-  max-height: 300px;
-  overflow-y: auto;
-  width: auto !important;
+    max-height: 300px; /* Adjust as needed */
+    overflow-y: auto;
+    width: auto !important; /* Ensure dropdown width adapts */
 }
 
-/* Toast z-index fix */
+/* Ensure toast messages are visible */
 #toast-container {
   z-index: 9999;
 }
 
-/* Text pulse loading */
+/* New utility class for hiding elements */
+.hidden {
+    display: none !important;
+}
+
+/* Optional: Animation for submit button while processing */
+.btn.pulse {
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(38, 166, 154, 0.4);
+    }
+    70% {
+        box-shadow: 0 0 0 10px rgba(38, 166, 154, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(38, 166, 154, 0);
+    }
+}
+
+/* --- GAYA UNTUK SALES ITEM CARD (MIRIP GOOGLE FORM) --- */
+
+/* Pastikan container item penjualan tidak memiliki padding horizontal yang berlebihan */
+/* Pertahankan ini jika Anda memiliki masalah margin/padding dari Materialize .row di luar card */
+#salesItemsContainer {
+    padding: 0;
+    /* margin-left: -0.75rem; */ /* Ini mungkin tidak lagi diperlukan atau perlu disesuaikan */
+    /* margin-right: -0.75rem; */ /* Ini mungkin tidak lagi diperlukan atau perlu disesuaikan */
+}
+
+/* Gaya untuk setiap kartu item penjualan */
+.sales-item-card {
+    /* Gunakan 100% lebar untuk mobile, padding sudah diatur di .card */
+    width: 100%;
+    margin-bottom: 20px; /* Jarak antar kartu item */
+    
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    background-color: #ffffff;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.08); /* Sedikit bayangan */
+    
+    /* Tambahan penting: Jadikan ini kontainer flex/grid jika Anda ingin tata letak yang lebih kompleks */
+    /* display: flex; flex-direction: column; */ /* Contoh jika perlu */
+}
+
+/* Override padding default .card untuk sales-item-card agar lebih mirip Google Form */
+.sales-item-card.card {
+    padding: 20px 25px; /* Tambah padding horizontal sedikit lebih banyak */
+}
+
+
+/* Pastikan input-field di dalam sales-item-card punya margin yang pas */
+.sales-item-card .input-field {
+    margin-bottom: 25px; /* **LEBIHKAN Jarak antar input field di dalam kartu** */
+    margin-top: 0; /* Penting: Hapus margin-top default Materialize input-field di awal */
+}
+
+/* Sesuaikan ukuran font untuk judul item baru */
+.sales-item-card .card-title {
+    margin-top: 0;
+    margin-bottom: 20px; /* Jarak judul dengan input pertama */
+    font-size: 1.2rem !important; /* Sedikit lebih besar untuk judul */
+    color: #424242;
+    font-weight: 500; /* Atau 600 jika ingin lebih tebal */
+}
+
+/* Pastikan Materialize labels dan dropdown input tampil dengan baik */
+.sales-item-card .input-field label {
+    font-size: 0.95rem; /* Sedikit lebih besar */
+    /* Top: -14px; */ /* Materialize sudah mengatur ini, periksa jika ada override */
+}
+
+.sales-item-card .select-wrapper input.select-dropdown {
+    margin-bottom: 0 !important;
+}
+
+/* Penyesuaian tombol hapus di dalam kartu item */
+.sales-item-card .remove-item-btn {
+    width: 100%; /* Buat tombol full width */
+    margin-top: 15px; /* Sesuaikan posisi vertikal */
+    margin-bottom: 0; /* Hapus margin bawah jika ada */
+    display: block; /* Pastikan tombol mengambil blok penuh */
+}
+
+/* Optional: Untuk tombol tambah item di bawah form */
+.add-item-btn {
+    margin-top: 30px; /* Beri jarak lebih ke tombol "Tambah Item" */
+    font-size: 1.1rem; /* Sedikit lebih besar */
+}
+
+/* Pastikan Materialize .row di dalam sales-item-card tidak menambah margin yang tidak diinginkan */
+.sales-item-card .row {
+    margin-left: 0 !important; /* Hapus offset Materialize col padding */
+    margin-right: 0 !important; /* Hapus offset Materialize col padding */
+    margin-bottom: 0; /* Hapus margin-bottom default row */
+}
+
+/* Pastikan .col s12 di dalamnya mengambil lebar penuh tanpa masalah */
+.sales-item-card .row .col.s12 {
+    padding-left: 0 !important; /* Hapus padding default col */
+    padding-right: 0 !important; /* Hapus padding default col */
+    /* Tambahkan padding di .input-field, bukan di .col */
+}
+
+/* Tambahan: Styling untuk label "Laporan No Sale?" agar lebih terpisah */
+#salesReportForm .row label {
+    margin-top: 10px; /* Memberi sedikit jarak dari elemen sebelumnya */
+    display: block; /* Pastikan mengambil baris baru */
+}
+
+/* Perbaiki juga tampilan detail penjualan utama */
+#salesDetailSection h5 {
+    margin-top: 30px; /* Jarak judul "Detail Penjualan" dari elemen atasnya */
+    margin-bottom: 20px; /* Jarak judul dari item pertama */
+    font-weight: 600;
+}
+
+
 .pulse-text {
   animation: pulseText 1.5s infinite;
   font-weight: 500;
@@ -88,78 +214,7 @@ select:focus {
   100% { opacity: 0.3; }
 }
 
-/* Submit pulsing effect */
-.btn.pulse {
-  animation: pulse 1.5s infinite;
-}
-
-@keyframes pulse {
-  0% { box-shadow: 0 0 0 0 rgba(38, 166, 154, 0.4); }
-  70% { box-shadow: 0 0 0 10px rgba(38, 166, 154, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(38, 166, 154, 0); }
-}
-
-/* Utility */
+/* Pastikan kelas .hidden tidak di override jika ada yang lebih spesifik */
 .hidden {
   display: none !important;
-}
-
-/* --- STYLE SALES ITEM CARD --- */
-#salesItemsContainer {
-  padding: 0;
-  margin-left: -0.75rem;
-  margin-right: -0.75rem;
-}
-
-.sales-item-card {
-  padding: 15px !important;
-  width: calc(100% - 1.5rem);
-  margin: 0.75rem auto 20px auto;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  background-color: #ffffff;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.08);
-}
-
-.sales-item-card .input-field {
-  margin-bottom: 15px;
-  margin-top: 0;
-}
-
-.sales-item-card .card-title {
-  margin-top: 0;
-  margin-bottom: 10px;
-  font-size: 1.1rem !important;
-  color: #424242;
-}
-
-.sales-item-card .input-field label {
-  font-size: 0.9rem;
-}
-
-.sales-item-card .select-wrapper input.select-dropdown {
-  margin-bottom: 0 !important;
-}
-
-.sales-item-card .remove-item-btn {
-  margin-top: 5px;
-}
-
-.sales-item-card .row {
-  margin-left: -0.75rem;
-  margin-right: -0.75rem;
-  margin-bottom: 0;
-}
-
-.sales-item-card .row .col.s12 {
-  padding-left: 0.75rem !important;
-  padding-right: 0.75rem !important;
-}
-
-#salesDetailSection {
-  padding: 24px;
-  background-color: white;
-  border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
-  margin-top: 24px;
 }
