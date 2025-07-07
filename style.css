@@ -1,4 +1,4 @@
-/* style.css */
+//* style.css */
 
 body {
     background-color: #E4F5FF; /* Warna latar belakang biru pudar sesuai permintaan */
@@ -124,7 +124,7 @@ select:focus {
 }
 
 #toast-container {
-  z-index: 9999 !important;
+    z-index: 9999 !important;
 }
 
 .hidden {
@@ -153,7 +153,6 @@ select:focus {
 
 /* Ini adalah container yang memegang semua sales-item-card */
 #salesItemsContainer {
-    /* Kita perlu memastikan container ini tidak menambah margin/padding yang tidak diinginkan */
     padding: 0 !important;
     margin-top: 15px !important; /* Memberikan sedikit jarak dari judul "Detail Penjualan" */
     margin-bottom: 0 !important; /* Pastikan tidak ada margin bawah yang tidak perlu */
@@ -207,14 +206,16 @@ select:focus {
     width: 100% !important;
     margin-top: 20px !important; /* Jarak tombol dari input terakhir */
     margin-bottom: 20px !important; /* Menambah jarak di bawah tombol hapus item */
-    padding: 10px 0 !important; /* Padding vertikal tombol sedikit dikurangi */
-    height: auto !important; /* Biarkan tinggi menyesuaikan padding */
-    line-height: normal !important; /* Reset line-height */
+    padding: 0 20px !important; /* **MODIFIKASI: Menghapus padding vertikal** */
+    height: 40px !important; /* **MODIFIKASI: Setel tinggi tetap** */
+    line-height: 40px !important; /* **MODIFIKASI: Line-height sama dengan tinggi** */
     font-size: 0.95rem !important; /* Ukuran font tombol hapus item */
     display: block !important;
 }
 .sales-item-card .remove-item-btn i {
-    line-height: inherit !important; /* Ikuti line-height dari tombol */
+    /* **MODIFIKASI: Gunakan vertical-align dan line-height yang spesifik** */
+    vertical-align: middle !important;
+    line-height: 40px !important; /* Pastikan ikon sejajar dengan line-height tombol */
 }
 
 
@@ -298,15 +299,15 @@ input[type="checkbox"] {
 
 
 .pulse-text {
-  animation: pulseText 1.5s infinite;
-  font-weight: 500;
-  color: #2196f3;
+    animation: pulseText 1.5s infinite;
+    font-weight: 500;
+    color: #2196f3;
 }
 
 @keyframes pulseText {
-  0% { opacity: 0.3; }
-  50% { opacity: 1; }
-  100% { opacity: 0.3; }
+    0% { opacity: 0.3; }
+    50% { opacity: 1; }
+    100% { opacity: 0.3; }
 }
 
 /* Pastikan elemen Materialize terinisialisasi dengan baik */
