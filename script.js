@@ -249,7 +249,7 @@ document.addEventListener('DOMContentLoaded', function () {
   
     try {
       // ✅ Tampilkan toast "Mengecek laporan sebelumnya..."
-      M.toast({ html: 'Mengecek laporan sebelumnya...', classes: 'blue lighten-2' });
+      M.toast({ html: 'Verifikasi sedang berlangsung...', classes: 'blue lighten-2' });
   
       const exists = await checkIfAlreadyReported(reportDate, storeName, spmName);
   
