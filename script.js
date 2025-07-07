@@ -1,4 +1,4 @@
-// script.js FINAL dengan spinner dan pesan delay
+// script.js FINAL REVISI dengan validasi data sudah pernah input
 
 document.addEventListener('DOMContentLoaded', function () {
   // Materialize CSS Init
@@ -20,6 +20,7 @@ document.addEventListener('DOMContentLoaded', function () {
   const submitReportBtn = document.getElementById('submitReportBtn');
   const successMessageSection = document.getElementById('successMessageSection');
   const submitNewReportBtn = document.getElementById('submitNewReportBtn');
+  const warningRevisiDiv = document.getElementById('warningRevisi');
 
   let storeSpmData = [];
   let productCategoryData = [];
@@ -82,87 +83,104 @@ document.addEventListener('DOMContentLoaded', function () {
     M.FormSelect.init(spmSelect);
   }
 
-  document.getElementById('storeName').addEventListener('change', function () {
+  async function checkIfAlreadyReported(date, store, spm) {
+    const params = new URLSearchParams({
+      action: 'getRekapExists',
+      token: 'RAHASIA',
+      date,
+      store,
+      spm
+    });
+    const response = await fetch(WEB_APP_URL + '?' + params.toString());
+    const result = await response.json();
+    return result.exists;
+  }
+
+  document.getElementById('storeName').addEventListener('change', async function () {
     populateSpmDropdown(this.value);
+    await checkAndShowRevisiWarning();
   });
 
+  document.getElementById('spmName').addEventListener('change', checkAndShowRevisiWarning);
+  document.getElementById('reportDate').addEventListener('change', checkAndShowRevisiWarning);
+
+  async function checkAndShowRevisiWarning() {
+    const date = document.getElementById('reportDate').value;
+    const store = document.getElementById('storeName').value;
+    const spm = document.getElementById('spmName').value;
+    if (date && store && spm) {
+      const exists = await checkIfAlreadyReported(date, store, spm);
+      warningRevisiDiv.style.display = exists ? 'block' : 'none';
+    } else {
+      warningRevisiDiv.style.display = 'none';
+    }
+  }
+
   function addSalesItemRow() {
-      const uniqueId = `qty-${Date.now()}`;
-      const itemCard = document.createElement('div');
-      itemCard.classList.add('sales-item-card', 'card', 'mb-3');
-      itemCard.innerHTML = `
-          <div class="card-content">
-              <span class="card-title" style="font-size: 1.2rem;">Item Penjualan Baru</span>
-  
-              <div class="row">
-                  <div class="input-field col s12">
-                      <select class="category-select">
-                          <option value="" disabled selected>Pilih Kategori</option>
-                          ${Object.keys(categoryToKatabanMap).map(category => `<option value="${category}">${category}</option>`).join('')}
-                      </select>
-                      <label>Kategori</label>
-                  </div>
-              </div>
-  
-              <div class="row">
-                  <div class="input-field col s12">
-                      <select class="kataban-select" disabled>
-                          <option value="" disabled selected>Pilih Model</option>
-                      </select>
-                      <label>Kataban (Model)</label>
-                  </div>
-              </div>
-  
-              <div class="row">
-                  <div class="input-field col s12">
-                      <input type="number" class="qty-input validate" min="1" value="1" id="${uniqueId}">
-                      <label for="${uniqueId}">Qty</label>
-                  </div>
-              </div>
-  
-              <div class="row">
-                  <div class="col s12 right-align">
-                      <button type="button" class="btn red lighten-1 waves-effect waves-light remove-item-btn">
-                          Hapus Item
-                          <i class="material-icons right">delete</i>
-                      </button>
-                  </div>
-              </div>
+    const uniqueId = `qty-${Date.now()}`;
+    const itemCard = document.createElement('div');
+    itemCard.classList.add('sales-item-card', 'card', 'mb-3');
+    itemCard.innerHTML = `
+      <div class="card-content">
+        <span class="card-title" style="font-size: 1.2rem;">Item Penjualan Baru</span>
+        <div class="row">
+          <div class="input-field col s12">
+            <select class="category-select">
+              <option value="" disabled selected>Pilih Kategori</option>
+              ${Object.keys(categoryToKatabanMap).map(category => `<option value="${category}">${category}</option>`).join('')}
+            </select>
+            <label>Kategori</label>
           </div>
-      `;
-      salesItemsContainer.appendChild(itemCard);
-  
-      // Inisialisasi ulang Materialize
-      M.FormSelect.init(itemCard.querySelectorAll('select'));
-      M.updateTextFields();
-  
-      // Populate dropdown model saat kategori dipilih
-      itemCard.querySelector('.category-select').addEventListener('change', function () {
-          const selectedCategory = this.value;
-          const katabanSelect = itemCard.querySelector('.kataban-select');
-  
-          katabanSelect.innerHTML = '<option value="" disabled selected>Pilih Model</option>';
-  
-          if (selectedCategory && categoryToKatabanMap[selectedCategory]) {
-              const uniqueKatabans = [...new Set(categoryToKatabanMap[selectedCategory])];
-              uniqueKatabans.forEach(model => {
-                  const option = document.createElement('option');
-                  option.value = model;
-                  option.textContent = model;
-                  katabanSelect.appendChild(option);
-              });
-              katabanSelect.removeAttribute('disabled');
-          } else {
-              katabanSelect.setAttribute('disabled', 'disabled');
-          }
-  
-          M.FormSelect.init(katabanSelect);
-      });
-  
-      // Tombol hapus item
-      itemCard.querySelector('.remove-item-btn').addEventListener('click', function () {
-          itemCard.remove();
-      });
+        </div>
+        <div class="row">
+          <div class="input-field col s12">
+            <select class="kataban-select" disabled>
+              <option value="" disabled selected>Pilih Model</option>
+            </select>
+            <label>Kataban (Model)</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="input-field col s12">
+            <input type="number" class="qty-input validate" min="1" value="1" id="${uniqueId}">
+            <label for="${uniqueId}">Qty</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col s12 right-align">
+            <button type="button" class="btn red lighten-1 waves-effect waves-light remove-item-btn">
+              Hapus Item <i class="material-icons right">delete</i>
+            </button>
+          </div>
+        </div>
+      </div>
+    `;
+    salesItemsContainer.appendChild(itemCard);
+    M.FormSelect.init(itemCard.querySelectorAll('select'));
+    M.updateTextFields();
+
+    itemCard.querySelector('.category-select').addEventListener('change', function () {
+      const selectedCategory = this.value;
+      const katabanSelect = itemCard.querySelector('.kataban-select');
+      katabanSelect.innerHTML = '<option value="" disabled selected>Pilih Model</option>';
+      if (selectedCategory && categoryToKatabanMap[selectedCategory]) {
+        const uniqueKatabans = [...new Set(categoryToKatabanMap[selectedCategory])];
+        uniqueKatabans.forEach(model => {
+          const option = document.createElement('option');
+          option.value = model;
+          option.textContent = model;
+          katabanSelect.appendChild(option);
+        });
+        katabanSelect.removeAttribute('disabled');
+      } else {
+        katabanSelect.setAttribute('disabled', 'disabled');
+      }
+      M.FormSelect.init(katabanSelect);
+    });
+
+    itemCard.querySelector('.remove-item-btn').addEventListener('click', function () {
+      itemCard.remove();
+    });
   }
 
   addSalesItemBtn.addEventListener('click', addSalesItemRow);
@@ -185,6 +203,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (!reportDate || !storeName || !spmName) return M.toast({ html: 'Lengkapi data wajib!', classes: 'red' });
     if (!isNoSale && itemCards.length === 0) return M.toast({ html: 'Tambahkan minimal 1 item atau centang No Sale', classes: 'red' });
+
+    const alreadyReported = await checkIfAlreadyReported(reportDate, storeName, spmName);
+    if (alreadyReported && !notes.toLowerCase().includes('revisi')) {
+      return M.toast({ html: 'Karena ini revisi, wajib isi catatan dengan kata "revisi"', classes: 'orange darken-3' });
+    }
 
     if (!isNoSale) {
       for (const card of itemCards) {
@@ -217,6 +240,7 @@ document.addEventListener('DOMContentLoaded', function () {
         salesItemsContainer.innerHTML = '';
         noSaleCheckbox.checked = false;
         salesDetailSection.style.display = 'block';
+        warningRevisiDiv.style.display = 'none';
       } else {
         throw new Error(result.message);
       }
@@ -235,6 +259,7 @@ document.addEventListener('DOMContentLoaded', function () {
     successMessageSection.classList.add('hidden');
     salesReportForm.classList.remove('hidden');
     responseMessageDiv.textContent = '';
+    warningRevisiDiv.style.display = 'none';
     if (!noSaleCheckbox.checked && salesItemsContainer.children.length === 0) addSalesItemRow();
   });
 
