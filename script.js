@@ -107,11 +107,43 @@ document.addEventListener('DOMContentLoaded', function () {
     const date = document.getElementById('reportDate').value;
     const store = document.getElementById('storeName').value;
     const spm = document.getElementById('spmName').value;
-    if (date && store && spm) {
-      const exists = await checkIfAlreadyReported(date, store, spm);
-      warningRevisiDiv.style.display = exists ? 'block' : 'none';
-    } else {
+    const warningRevisiDiv = document.getElementById('warningRevisi');
+    const loaderDiv = document.getElementById('checkRevisiLoader');
+  
+    if (!date || !store || !spm) {
       warningRevisiDiv.style.display = 'none';
+      loaderDiv.style.display = 'none';
+      return;
+    }
+  
+    loaderDiv.style.display = 'block';
+    loaderDiv.innerHTML = `
+      <div class="preloader-wrapper small active" style="vertical-align: middle;">
+        <div class="spinner-layer spinner-blue-only">
+          <div class="circle-clipper left"><div class="circle"></div></div>
+          <div class="gap-patch"><div class="circle"></div></div>
+          <div class="circle-clipper right"><div class="circle"></div></div>
+        </div>
+      </div>
+      <span class="grey-text text-darken-2" style="margin-left: 8px;">Memeriksa duplikasi...</span>
+    `;
+  
+    try {
+      const response = await fetch(`${WEB_APP_URL}?action=getRekapExists&date=${date}&store=${store}&spm=${spm}`);
+      const data = await response.json();
+  
+      if (data.exists) {
+        warningRevisiDiv.style.display = 'block';
+        loaderDiv.style.display = 'none';
+      } else {
+        warningRevisiDiv.style.display = 'none';
+        loaderDiv.innerHTML = `<i class="material-icons green-text">check_circle</i>`;
+        setTimeout(() => loaderDiv.style.display = 'none', 1500);
+      }
+    } catch (err) {
+      console.error("Error checking duplikat:", err);
+      loaderDiv.innerHTML = `<span class="red-text text-darken-2">⚠ Gagal cek duplikat</span>`;
+      setTimeout(() => loaderDiv.style.display = 'none', 3000);
     }
   }
 
