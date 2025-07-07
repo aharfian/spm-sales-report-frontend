@@ -289,7 +289,7 @@ document.addEventListener('DOMContentLoaded', function () {
         throw new Error(result.message);
       }
     } catch (err) {
-      M.toast({ html: '❌ ' + err.message, classes: 'red' });
+      M.toast({ html: '⚠️ ' + err.message, classes: 'red' });
       responseMessageDiv.textContent = 'Gagal mengirim laporan';
       responseMessageDiv.className = 'red-text center-align';
     } finally {
