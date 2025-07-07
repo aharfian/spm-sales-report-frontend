@@ -33,8 +33,8 @@ body {
 
 /* Styling untuk input fields utama (Tanggal, Toko, SPM, Catatan) */
 .input-field {
-    margin-bottom: 20px !important; /* Mengurangi jarak antar input field utama */
-    margin-top: 15px !important; /* Mengurangi jarak dari elemen atasnya */
+    margin-bottom: 15px !important; /* Mengurangi jarak antar input field utama */
+    margin-top: 10px !important; /* Mengurangi jarak dari elemen atasnya */
     position: relative; /* Penting untuk label positioning */
 }
 
