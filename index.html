@@ -61,6 +61,12 @@
             </div>
           </div>
 
+          <!-- ⚠️ Notifikasi jika data sebelumnya sudah ada -->
+          <div id="warningRevisi" class="card-panel yellow lighten-4 black-text" style="display:none; margin-top:12px;">
+            Anda sudah pernah melaporkan untuk tanggal ini. Wajib isi catatan dengan <strong>"Revisi"</strong>.
+          </div>
+
+          <!-- 📦 Detail Penjualan -->
           <div id="salesDetailSection">
             <div class="divider mt-3 mb-3"></div>
             <h5>Detail Penjualan</h5>
@@ -75,6 +81,7 @@
             </div>
           </div>
 
+          <!-- 📝 Catatan -->
           <div class="row mt-3">
             <div class="input-field col s12">
               <textarea id="notes" class="materialize-textarea"></textarea>
@@ -82,6 +89,7 @@
             </div>
           </div>
 
+          <!-- 🚀 Tombol Submit -->
           <div class="row mt-3">
             <div class="col s12 center-align">
               <button class="btn waves-effect waves-light green darken-1" type="submit" name="action" id="submitReportBtn">
@@ -108,6 +116,7 @@
     </div>
   </div>
 
+  <!-- 🔗 External Script -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
   <script src="script.js"></script>
 </body>
