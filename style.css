@@ -155,3 +155,11 @@ select:focus {
   padding-left: 0.75rem !important;
   padding-right: 0.75rem !important;
 }
+
+#salesDetailSection {
+  padding: 24px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+  margin-top: 24px;
+}
