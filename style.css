@@ -1,7 +1,7 @@
-//* style.css */
+/* style.css */
 
 body {
-    background-color: #f5f5f5; /* Warna latar belakang abu-abu muda */
+    background-color: #E4F5FF; /* Warna latar belakang biru pudar sesuai permintaan */
     font-family: 'Roboto', sans-serif; /* Pastikan font konsisten */
 }
 
@@ -33,8 +33,8 @@ body {
 
 /* Styling untuk input fields utama (Tanggal, Toko, SPM, Catatan) */
 .input-field {
-    margin-bottom: 35px !important; /* Jarak antar input field utama yang lebih lebar */
-    margin-top: 25px !important; /* Jarak dari elemen atasnya */
+    margin-bottom: 20px !important; /* Mengurangi jarak antar input field utama */
+    margin-top: 15px !important; /* Mengurangi jarak dari elemen atasnya */
     position: relative; /* Penting untuk label positioning */
 }
 
@@ -82,30 +82,30 @@ select:focus {
 
 .btn {
     border-radius: 6px !important; /* Radius tombol lebih halus */
-    padding: 0 25px !important; /* Padding horizontal default */
-    height: 50px !important; /* Tinggi tombol lebih standar */
-    line-height: 50px !important; /* Untuk vertikal align teks */
-    font-size: 1.1rem !important;
+    padding: 0 20px !important; /* Padding horizontal default sedikit dikurangi */
+    height: 45px !important; /* Tinggi tombol sedikit dikurangi */
+    line-height: 45px !important; /* Untuk vertikal align teks */
+    font-size: 0.95rem !important; /* Mengurangi ukuran font semua tombol */
     font-weight: 500;
 }
 
 .btn i {
-    font-size: 1.4rem !important; /* Ukuran ikon lebih besar */
+    font-size: 1.2rem !important; /* Ukuran ikon disesuaikan dengan font tombol */
     vertical-align: middle;
-    line-height: 50px !important; /* Pastikan ikon sejajar dengan teks */
+    line-height: 45px !important; /* Pastikan ikon sejajar dengan teks */
 }
 
 /* Utility classes, pastikan !important */
 .mt-3 {
-    margin-top: 2.5rem !important; /* Lebih besar dari 1.5rem */
+    margin-top: 2.5rem !important; /* Tetap sama untuk konsistensi */
 }
 
 .mb-3 {
-    margin-bottom: 2.5rem !important; /* Lebih besar dari 1.5rem */
+    margin-bottom: 2.5rem !important; /* Tetap sama untuk konsistensi */
 }
 
 .p-3 {
-    padding: 2.5rem !important; /* Lebih besar dari 1.5rem */
+    padding: 2.5rem !important; /* Tetap sama untuk konsistensi */
 }
 
 .divider {
@@ -172,19 +172,19 @@ select:focus {
 
 /* Judul "Item Penjualan Baru" di dalam kartu */
 .sales-item-card .card-title {
-    font-size: 1.4rem !important; /* Ukuran judul item */
+    font-size: 1.3rem !important; /* Mengurangi ukuran font judul item */
     font-weight: 500 !important;
     color: #424242;
     margin-top: 0 !important;
-    margin-bottom: 25px !important; /* Jarak judul dengan input pertama */
+    margin-bottom: 20px !important; /* Sedikit mengurangi jarak judul dengan input pertama */
     text-align: left !important; /* Kembali ke kiri */
 }
 
 /* PENTING: Atur ulang margin default Materialize input-field di dalam sales item card */
 /* Ini akan menjadi sumber utama jarak vertikal */
 .sales-item-card .input-field {
-    margin-bottom: 35px !important; /* Jarak vertikal antar input di dalam item */
-    margin-top: 25px !important; /* Jarak dari judul atau input sebelumnya */
+    margin-bottom: 25px !important; /* Mengurangi jarak vertikal antar input di dalam item */
+    margin-top: 15px !important; /* Mengurangi jarak dari judul atau input sebelumnya */
     padding-top: 0 !important; /* Pastikan tidak ada padding atas yang aneh */
     padding-bottom: 0 !important; /* Pastikan tidak ada padding bawah yang aneh */
 }
@@ -205,11 +205,12 @@ select:focus {
 /* Penyesuaian tombol hapus di dalam kartu item */
 .sales-item-card .remove-item-btn {
     width: 100% !important;
-    margin-top: 25px !important; /* Jarak tombol dari input terakhir */
-    padding: 12px 0 !important; /* Padding vertikal tombol */
+    margin-top: 20px !important; /* Mengurangi jarak tombol dari input terakhir */
+    margin-bottom: 20px !important; /* Menambah jarak di bawah tombol hapus item */
+    padding: 10px 0 !important; /* Padding vertikal tombol sedikit dikurangi */
     height: auto !important; /* Biarkan tinggi menyesuaikan padding */
     line-height: normal !important; /* Reset line-height */
-    font-size: 1.1rem !important;
+    font-size: 0.95rem !important; /* Mengurangi ukuran font tombol hapus item */
     display: block !important;
 }
 .sales-item-card .remove-item-btn i {
@@ -222,17 +223,17 @@ h5 { /* Menargetkan elemen h5 secara umum karena Anda menggunakannya untuk "Deta
     font-size: 1.6rem !important; /* Ukuran judul bagian */
     font-weight: 600 !important;
     color: #424242;
-    margin-top: 40px !important; /* Jarak dari elemen atasnya */
-    margin-bottom: 30px !important; /* Jarak dari item pertama */
+    margin-top: 30px !important; /* Mengurangi jarak dari elemen atasnya */
+    margin-bottom: 20px !important; /* Mengurangi jarak dari item pertama */
 }
 
 /* Tombol "Tambah Item" */
 #addSalesItemBtn {
-    margin-top: 35px !important;
-    padding: 15px 30px !important;
+    margin-top: 25px !important; /* Mengurangi jarak dari elemen atasnya */
+    padding: 12px 25px !important; /* Mengurangi padding */
     height: auto !important;
     line-height: normal !important;
-    font-size: 1.2rem !important;
+    font-size: 1.05rem !important; /* Mengurangi ukuran font tombol tambah item */
 }
 #addSalesItemBtn i {
     line-height: inherit !important;
@@ -252,9 +253,9 @@ h5 { /* Menargetkan elemen h5 secara umum karena Anda menggunakannya untuk "Deta
 
 /* Tombol Kirim Laporan */
 #submitReportBtn {
-    padding: 18px 35px !important; /* Padding lebih besar */
-    font-size: 1.3rem !important;
-    margin-top: 40px !important; /* Jarak dari catatan */
+    padding: 15px 30px !important; /* Mengurangi padding */
+    font-size: 1.1rem !important; /* Mengurangi ukuran font tombol kirim laporan */
+    margin-top: 30px !important; /* Mengurangi jarak dari catatan */
     height: auto !important;
     line-height: normal !important;
 }
@@ -272,7 +273,7 @@ input[type="checkbox"] + span {
     color: #424242;
     /* Tambahkan margin bawah untuk checkbox agar tidak terlalu rapat */
     display: inline-block; /* Penting untuk margin-bottom bekerja pada span */
-    margin-bottom: 25px !important;
+    margin-bottom: 20px !important; /* Mengurangi margin bawah */
 }
 input[type="checkbox"] {
     position: absolute;
@@ -282,7 +283,7 @@ input[type="checkbox"] {
 
 /* Tambahan: Styling untuk peringatan revisi */
 #warningRevisi {
-    margin-top: 25px !important;
+    margin-top: 20px !important; /* Mengurangi margin atas */
     padding: 15px !important;
     border-radius: 8px !important;
     font-size: 0.95rem !important;
@@ -290,10 +291,10 @@ input[type="checkbox"] {
 
 /* Tambahan: Styling untuk loading spinner */
 #loadingSection p {
-    font-size: 1.1rem !important;
+    font-size: 1rem !important; /* Mengurangi ukuran font */
 }
 #delayNotice {
-    font-size: 1rem !important;
+    font-size: 0.95rem !important; /* Mengurangi ukuran font */
 }
 
 
