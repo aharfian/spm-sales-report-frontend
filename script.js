@@ -220,7 +220,7 @@ document.addEventListener('DOMContentLoaded', function () {
       delayNotice.style.marginTop = '12px';
       delayNotice.textContent = 'Mohon tunggu, kemungkinan traffic server sedang tinggi...';
       document.getElementById('loadingSection').appendChild(delayNotice);
-    }, 10000);
+    }, 4000);
     Promise.all([fetchStoreSpmData(), fetchProdukKategoriData()]).then(() => {
       clearTimeout(delayTimer);
       document.getElementById('loadingSection').style.display = 'none';
