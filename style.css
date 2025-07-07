@@ -106,136 +106,76 @@ select:focus {
 
 /* --- GAYA UNTUK SALES ITEM CARD (MIRIP GOOGLE FORM) --- */
 
-/* Ini adalah container yang memegang semua sales-item-card */
+/* Pastikan container item penjualan tidak memiliki padding horizontal yang berlebihan */
 #salesItemsContainer {
-    /* Kita ingin dia tidak menambah padding/margin sendiri yang aneh */
-    padding: 0 !important;
-    margin-left: 0 !important;
-    margin-right: 0 !important;
+    padding: 0; /* Hapus padding default jika ada */
+    margin-left: -0.75rem; /* Kompensasi padding default Materialize .row jika perlu */
+    margin-right: -0.75rem; /* Kompensasi padding default Materialize .row jika perlu */
 }
 
 .sales-item-card {
-    /* Pastikan mengambil lebar penuh kecuali paddingnya sendiri */
-    width: 100% !important; /* Penting untuk responsif */
-    margin-bottom: 25px !important; /* Jarak antar kartu item yang lebih besar */
+    width: calc(100% - 1.5rem); /* Mengambil 100% lebar dikurangi total padding horizontal default Materialize col */
+    margin-left: 0.75rem; /* Kompensasi untuk padding col */
+    margin-right: 0.75rem; /* Kompensasi untuk padding col */
+    margin-bottom: 20px; /* Jarak antar kartu item */
     
     border: 1px solid #e0e0e0;
     border-radius: 8px;
     background-color: #ffffff;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.08); /* Sedikit bayangan */
 }
 
-/* Override padding default .card untuk sales-item-card agar lebih mirip Google Form */
+/* Karena .sales-item-card juga memiliki kelas .card, atur padding di .card saja */
+/* Jika Anda ingin padding yang berbeda, bisa override di sini */
 .sales-item-card.card {
-    padding: 25px !important; /* Padding internal yang lebih besar untuk seluruh kartu */
+    padding: 15px; /* Atur padding kartu item agar tidak terlalu sempit */
 }
 
-/* PENTING: Atur ulang margin default Materialize input-field */
+
+/* Pastikan input-field di dalam sales-item-card punya margin yang pas */
 .sales-item-card .input-field {
-    margin-bottom: 30px !important; /* Jarak antar input field di dalam kartu */
-    margin-top: 20px !important; /* Tambah margin-top agar tidak terlalu rapat dengan judul/input sebelumnya */
-    position: relative; /* Penting untuk label positioning */
-}
-
-/* Pastikan label berada di tempat yang benar dan terlihat jelas */
-.sales-item-card .input-field label {
-    font-size: 1rem !important; /* Ukuran font label lebih besar */
-    top: 0 !important; /* Pastikan label berada di atas input */
-    left: 0 !important;
-    transform: translateY(-20px) scale(0.85); /* Materialize default is 0.75, make it slightly larger if needed */
-    -webkit-transform: translateY(-20px) scale(0.85);
-    -moz-transform: translateY(-20px) scale(0.85);
-    transform-origin: 0% 100%;
+    margin-bottom: 15px; /* Jarak antar input field di dalam kartu */
+    margin-top: 0; /* Penting: Hapus margin-top default Materialize input-field di awal */
 }
 
 /* Sesuaikan ukuran font untuk judul item baru */
 .sales-item-card .card-title {
-    margin-top: 0 !important;
-    margin-bottom: 25px !important; /* Jarak judul dengan input pertama */
-    font-size: 1.3rem !important; /* Sedikit lebih besar untuk judul */
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 1.1rem !important;
     color: #424242;
-    font-weight: 500 !important;
 }
 
-/* Pastikan dropdown input Materialize tampil dengan baik */
+/* Pastikan Materialize labels dan dropdown input tampil dengan baik */
+.sales-item-card .input-field label {
+    font-size: 0.9rem;
+}
+
 .sales-item-card .select-wrapper input.select-dropdown {
     margin-bottom: 0 !important;
-    padding-top: 10px !important; /* Memberi sedikit ruang atas pada input dropdown */
 }
 
 /* Penyesuaian tombol hapus di dalam kartu item */
 .sales-item-card .remove-item-btn {
-    width: 100% !important; /* Buat tombol full width */
-    margin-top: 25px !important; /* Sesuaikan posisi vertikal */
-    margin-bottom: 0 !important;
-    display: block !important;
-    padding: 10px 0 !important; /* Beri padding vertikal pada tombol */
-    font-size: 1rem !important;
+    margin-top: 5px; /* Sesuaikan posisi vertikal */
 }
 
 /* Optional: Untuk tombol tambah item di bawah form */
-#addSalesItemBtn {
-    margin-top: 30px !important; /* Beri jarak lebih ke tombol "Tambah Item" */
-    font-size: 1.1rem !important;
-    padding: 10px 20px !important; /* Tambah padding tombol */
+.add-item-btn {
+    margin-top: 20px;
 }
 
 /* Pastikan Materialize .row di dalam sales-item-card tidak menambah margin yang tidak diinginkan */
 .sales-item-card .row {
-    margin-left: 0 !important;
-    margin-right: 0 !important;
-    margin-bottom: 0 !important; /* Hapus margin-bottom default row */
+    margin-left: -0.75rem; /* Offset Materialize col padding */
+    margin-right: -0.75rem; /* Offset Materialize col padding */
+    margin-bottom: 0; /* Hapus margin-bottom default row */
 }
 
 /* Pastikan .col s12 di dalamnya mengambil lebar penuh tanpa masalah */
 .sales-item-card .row .col.s12 {
-    padding-left: 0 !important;
-    padding-right: 0 !important;
-}
-
-/* Perbaiki juga tampilan detail penjualan utama */
-#salesDetailSection h5 {
-    margin-top: 30px !important; /* Jarak judul "Detail Penjualan" dari elemen atasnya */
-    margin-bottom: 25px !important; /* Jarak judul dari item pertama */
-    font-weight: 600 !important;
-    font-size: 1.4rem !important;
-}
-
-/* Perbaiki jarak input-field di form utama (bukan sales item) */
-#salesReportForm .input-field {
-    margin-bottom: 30px !important; /* Tambah jarak antar field di form utama */
-    margin-top: 20px !important;
-}
-
-/* Styling untuk checkbox "Laporan No Sale?" */
-#noSaleCheckbox + span {
-    padding-left: 30px !important; /* Untuk memberi ruang pada checkbox Materialize */
-    position: relative;
-    top: 5px; /* Sesuaikan vertikal jika perlu */
-}
-#noSaleCheckbox {
-    position: absolute;
-    opacity: 0;
-    pointer-events: none;
-}
-
-
-/* Styling untuk catatan (opsional) */
-#notes {
-    padding-top: 10px !important; /* Beri padding atas pada textarea */
-}
-#notes + label {
-    top: 0 !important;
-    transform: translateY(-20px) scale(0.85);
-    -webkit-transform: translateY(-20px) scale(0.85);
-    -moz-transform: translateY(-20px) scale(0.85);
-}
-
-/* Tombol Kirim Laporan */
-#submitReportBtn {
-    padding: 12px 25px !important; /* Beri padding lebih pada tombol submit */
-    font-size: 1.1rem !important;
-    margin-top: 30px !important;
+    padding-left: 0.75rem !important;
+    padding-right: 0.75rem !important;
 }
 
 .pulse-text {
@@ -251,5 +191,5 @@ select:focus {
 }
 
 .hidden {
-  display: none !important;
+  display: none;
 }
