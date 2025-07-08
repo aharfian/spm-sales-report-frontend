@@ -360,14 +360,15 @@ input[type="checkbox"] {
   text-align: center !important;
 }
 
-.sales-item-card .remove-item-btn {
-  display: flex;
+.remove-item-btn {
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 6px;
+  width: 100%;
 }
 
-.sales-item-card .remove-item-btn i {
+.remove-item-btn i {
   margin-left: 0 !important;
 }
 
