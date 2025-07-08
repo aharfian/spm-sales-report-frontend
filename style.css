@@ -359,3 +359,14 @@ input[type="checkbox"] {
 #toast-container .toast {
   text-align: center !important;
 }
+
+.sales-item-card .remove-item-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px; /* jarak antara teks dan ikon */
+}
+
+.sales-item-card .remove-item-btn i {
+  margin-left: 0 !important; /* Hapus margin default dari Materialize */
+}
