@@ -29,10 +29,10 @@ body {
 }
 
 .card-title {
-    font-weight: 700; /* Lebih tebal */
+    font-weight: bold !important; /* Lebih tebal */
     margin-bottom: 40px !important; /* Jarak yang lebih jelas */
     color: #424242;
-    font-size: 1.8rem; /* Ukuran judul form utama */
+    font-size: 1.8rem !important; /* Ukuran judul form utama */
     text-align: center; /* Pastikan judul di tengah */
 }
 
