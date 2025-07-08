@@ -180,7 +180,7 @@ document.addEventListener('DOMContentLoaded', function () {
         <div class="row">
           <div class="col s12 right-align">
             <button type="button" class="btn red lighten-1 waves-effect waves-light remove-item-btn">
-              Hapus Item <i class="material-icons right">delete</i>
+              Hapus Item <i class="material-icons">delete</i>
             </button>
           </div>
         </div>
