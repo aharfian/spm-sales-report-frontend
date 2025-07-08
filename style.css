@@ -388,5 +388,8 @@ input[type="checkbox"] {
 }
 
 .modal {
-  top: 10% !important; /* Jarak dari atas */
+  top: 10% !important;
+  border-radius: 12px !important;
+  box-shadow: 0 6px 12px rgba(0,0,0,0.2) !important;
 }
+
