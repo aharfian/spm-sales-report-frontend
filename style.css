@@ -371,5 +371,7 @@ input[type="checkbox"] {
   margin-left: 10px !important;
 }
 
-#notes + label {
-  font-size: 2rem; /* Ubah ke ukuran yang kamu mau */
+textarea#notes ~ label {
+  font-size: 1.2rem !important;
+}
+
