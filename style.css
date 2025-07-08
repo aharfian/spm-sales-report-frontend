@@ -221,7 +221,7 @@ select:focus {
 
 /* Judul bagian "Detail Penjualan" */
 .section-title { /* Menggunakan kelas khusus untuk judul bagian seperti "Detail Penjualan" */
-    font-size: 1.6rem !important; /* Ukuran judul bagian */
+    font-size: 1.2rem !important; /* Ukuran judul bagian */
     font-weight: 600 !important;
     color: #424242;
     margin-top: 0 !important; /* Karena sudah di dalam card baru */
