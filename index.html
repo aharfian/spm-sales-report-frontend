@@ -132,5 +132,20 @@
   <!-- 🔗 External Script -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
   <script src="script.js"></script>
+
+    <!-- 🔒 Modal Input PIN -->
+  <div id="pinModal" class="modal">
+    <div class="modal-content">
+      <h5>Masukkan PIN</h5>
+      <div class="input-field">
+        <input id="pinInput" type="password" maxlength="10">
+        <label for="pinInput">PIN Anda</label>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button id="confirmPinBtn" class="modal-close btn green">Kirim</button>
+      <button class="modal-close btn-flat">Batal</button>
+    </div>
+  </div>
 </body>
 </html>
