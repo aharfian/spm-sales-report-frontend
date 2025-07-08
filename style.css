@@ -364,9 +364,10 @@ input[type="checkbox"] {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 6px; /* jarak antara teks dan ikon */
+  gap: 6px;
 }
 
 .sales-item-card .remove-item-btn i {
-  margin-left: 0 !important; /* Hapus margin default dari Materialize */
+  margin-left: 0 !important;
 }
+
