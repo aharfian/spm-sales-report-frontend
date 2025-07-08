@@ -371,9 +371,6 @@ input[type="checkbox"] {
   margin-left: 10px !important;
 }
 
-#notes + label {
+#notes:placeholder-shown + label {
   font-size: 1.3rem !important;
-  transform: translateY(12px) scale(1) !important;
-  -webkit-transform: translateY(12px) scale(1) !important;
-  color: #757575 !important;
 }
