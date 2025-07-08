@@ -324,4 +324,5 @@ document.addEventListener('DOMContentLoaded', function () {
       salesReportForm.classList.remove('hidden');
     });
   }
+  M.Modal.init(document.querySelectorAll('.modal'));
 });
