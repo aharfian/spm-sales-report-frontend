@@ -375,3 +375,7 @@ input[type="checkbox"] {
   font-size: 1.2rem !important;
 }
 
+.container {
+  background-color: rgba(255, 255, 255, 0.95);
+}
+
