@@ -367,8 +367,9 @@ input[type="checkbox"] {
   gap: 6px;
   width: 100%;
 }
-
 .remove-item-btn i {
   margin-left: 10px !important;
 }
 
+#notes + label {
+  font-size: 1rem; /* Ubah ke ukuran yang kamu mau */
