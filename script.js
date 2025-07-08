@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function () {
     autoClose: true,
   });
 
-  const WEB_APP_URL = 'RAHASIA'; // Ganti dengan middleware kamu
+  const WEB_APP_URL = 'https://spm-middleware.onrender.com/proxy'; // Ganti dengan middleware kamu
 
   const salesReportForm = document.getElementById('salesReportForm');
   const salesItemsContainer = document.getElementById('salesItemsContainer');
