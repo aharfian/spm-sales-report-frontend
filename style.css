@@ -30,7 +30,7 @@ body {
 
 .card-title {
     font-weight: 700; /* Lebih tebal */
-    margin-bottom: 30px; /* Jarak yang lebih jelas */
+    margin-bottom: 60px; /* Jarak yang lebih jelas */
     color: #424242;
     font-size: 1.8rem; /* Ukuran judul form utama */
     text-align: center; /* Pastikan judul di tengah */
