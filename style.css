@@ -386,3 +386,7 @@ input[type="checkbox"] {
   border-radius: 12px;
   padding: 20px;
 }
+
+.modal {
+  top: 10% !important; /* Jarak dari atas */
+}
