@@ -371,6 +371,10 @@ input[type="checkbox"] {
   margin-left: 10px !important;
 }
 
+#notes + label {
+  font-size: 1.2rem !important;
+}
+
 .container {
   background-color: transparent !important;
 }
