@@ -1,15 +1,13 @@
-// script.js FINAL REVISI dengan validasi data sudah pernah input
+// script.js FINAL REVISI + Validasi PIN Sebelum Submit
 
 document.addEventListener('DOMContentLoaded', function () {
-  // Materialize CSS Init
   M.FormSelect.init(document.querySelectorAll('select'));
   M.Datepicker.init(document.querySelectorAll('.datepicker'), {
     format: 'yyyy-mm-dd',
     autoClose: true,
   });
-  M.textareaAutoResize(document.getElementById('notes'));
 
-  const WEB_APP_URL = 'https://spm-middleware.onrender.com/proxy';
+  const WEB_APP_URL = 'RAHASIA'; // Ganti dengan middleware kamu
 
   const salesReportForm = document.getElementById('salesReportForm');
   const salesItemsContainer = document.getElementById('salesItemsContainer');
@@ -109,13 +107,13 @@ document.addEventListener('DOMContentLoaded', function () {
     const spm = document.getElementById('spmName').value;
     const warningRevisiDiv = document.getElementById('warningRevisi');
     const loaderDiv = document.getElementById('checkRevisiLoader');
-  
+
     if (!date || !store || !spm) {
       warningRevisiDiv.style.display = 'none';
       loaderDiv.style.display = 'none';
       return;
     }
-  
+
     loaderDiv.style.display = 'block';
     loaderDiv.innerHTML = `
       <div class="preloader-wrapper small active" style="vertical-align: middle;">
@@ -127,11 +125,11 @@ document.addEventListener('DOMContentLoaded', function () {
       </div>
       <span class="grey-text text-darken-2" style="margin-left: 8px;">Memeriksa duplikasi...</span>
     `;
-  
+
     try {
       const response = await fetch(`${WEB_APP_URL}?action=getRekapExists&date=${date}&store=${store}&spm=${spm}`);
       const data = await response.json();
-  
+
       if (data.exists) {
         warningRevisiDiv.style.display = 'block';
         loaderDiv.style.display = 'none';
@@ -224,7 +222,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
   submitReportBtn.addEventListener('click', async function (e) {
     e.preventDefault();
-  
+
+    const pin = prompt('Masukkan PIN untuk verifikasi:');
+    if (!pin) return M.toast({ html: 'PIN wajib diisi', classes: 'red' });
+
     const reportDate = document.getElementById('reportDate').value;
     const storeName = document.getElementById('storeName').value;
     const spmName = document.getElementById('spmName').value;
@@ -232,31 +233,28 @@ document.addEventListener('DOMContentLoaded', function () {
     const isNoSale = noSaleCheckbox.checked;
     const reportItems = [];
     const itemCards = salesItemsContainer.querySelectorAll('.sales-item-card');
-  
+
     if (!reportDate || !storeName || !spmName) {
       return M.toast({ html: 'Lengkapi data wajib!', classes: 'red' });
     }
     if (!isNoSale && itemCards.length === 0) {
       return M.toast({ html: 'Tambahkan minimal 1 item atau centang No Sale', classes: 'red' });
     }
-  
-    // 💡 Langsung aktifkan spinner animasi dan disable tombol
+
     submitReportBtn.disabled = true;
     submitReportBtn.innerHTML = 'Mengirim... <i class="material-icons right">send</i>';
     submitReportBtn.classList.add('pulse');
     responseMessageDiv.textContent = 'Mengirim laporan...';
     responseMessageDiv.className = 'blue-text center-align';
-  
+
     try {
-      // ✅ Tampilkan toast "Mengecek laporan sebelumnya..."
       M.toast({ html: 'Verifikasi sedang berlangsung...', classes: 'blue lighten-2' });
-  
+
       const exists = await checkIfAlreadyReported(reportDate, storeName, spmName);
-  
       if (exists && !notes.trim().toLowerCase().includes('revisi')) {
         throw new Error('Data sudah pernah dikirim. Tambahkan kata "Revisi" pada catatan.');
       }
-  
+
       if (!isNoSale) {
         for (const card of itemCards) {
           const category = card.querySelector('.category-select').value;
@@ -268,14 +266,15 @@ document.addEventListener('DOMContentLoaded', function () {
           reportItems.push({ category, model, qty: parseInt(qty) });
         }
       }
-  
+
       const res = await fetch(WEB_APP_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ reportDate, storeName, spmName, isNoSale, notes, salesItems: reportItems }),
+        body: JSON.stringify({ reportDate, storeName, spmName, isNoSale, notes, salesItems: reportItems, pin }),
       });
+
       const result = await res.json();
-  
+
       if (result.success) {
         M.toast({ html: 'Laporan berhasil!', classes: 'green' });
         salesReportForm.classList.add('hidden');
@@ -307,7 +306,6 @@ document.addEventListener('DOMContentLoaded', function () {
     if (!noSaleCheckbox.checked && salesItemsContainer.children.length === 0) addSalesItemRow();
   });
 
-  // Spinner saat load awal dan delay text
   if (!window.__dataLoadedOnce) {
     window.__dataLoadedOnce = true;
     document.getElementById('loadingSection').style.display = 'block';
