@@ -30,7 +30,7 @@ body {
 
 .card-title {
     font-weight: 700; /* Lebih tebal */
-    margin-bottom: 60px; /* Jarak yang lebih jelas */
+    margin-bottom: 60px !important; /* Jarak yang lebih jelas */
     color: #424242;
     font-size: 1.8rem; /* Ukuran judul form utama */
     text-align: center; /* Pastikan judul di tengah */
@@ -69,7 +69,7 @@ body {
 .input-field input[type=number]:focus,
 .input-field textarea:focus,
 .input-field select:focus {
-    border-bottom: 2px solid #2196f3 !important; /* Garis bawah lebih tebal saat fokus */
+    border-bottom: 1px solid #2196f3 !important; /* Garis bawah lebih tebal saat fokus */
     box-shadow: 0 2px 0 0 #2196f3 !important;
 }
 
