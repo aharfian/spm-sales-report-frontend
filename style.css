@@ -381,7 +381,7 @@ input[type="checkbox"] {
 
 /* Ukuran modal PIN lebih kecil dan responsif */
 #pinModal.modal {
-  max-width: 400px; /* Ubah angka ini sesuai kebutuhan */
+  max-width: 250px; /* Ubah angka ini sesuai kebutuhan */
   width: 90%;       /* Responsif di layar kecil */
   border-radius: 12px;
   padding: 20px;
