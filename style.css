@@ -379,17 +379,17 @@ input[type="checkbox"] {
   background-color: transparent !important;
 }
 
-/* Ukuran modal PIN lebih kecil dan responsif */
-#pinModal.modal {
-  max-width: 100px !important; /* Ubah angka ini sesuai kebutuhan */
-  width: 90% !important;       /* Responsif di layar kecil */
-  border-radius: 12px;
-  padding: 20px;
+#pinModal .modal-content h5 {
+  margin-bottom: 20px;
+  font-weight: 600;
+  text-align: center;
 }
 
-.modal {
-  top: 10% !important;
-  border-radius: 12px !important;
-  box-shadow: 0 6px 12px rgba(0,0,0,0.2) !important;
+#pinModal input {
+  text-align: center;
+  font-size: 1.2rem;
+  letter-spacing: 0.2rem;
+}
+
 }
 
