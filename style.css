@@ -322,9 +322,9 @@ input[type="checkbox"] {
 
 /* Mengatur ulang posisi Materialize labels untuk input fields */
 .input-field label.active {
-    transform: translateY(-20px) scale(0.85) !important; /* Angkat label saat input aktif/terisi */
-    -webkit-transform: translateY(-20px) scale(0.85) !important;
-    -moz-transform: translateY(-20px) scale(0.85) !important;
+    transform: translateY(-10px) scale(0.85) !important; /* Angkat label saat input aktif/terisi */
+    -webkit-transform: translateY(-10px) scale(0.85) !important;
+    -moz-transform: translateY(-10px) scale(0.85) !important;
     transform-origin: 0% 100% !important;
     top: 0 !important; /* Pastikan tidak ada offset top tambahan */
 }
@@ -334,9 +334,9 @@ input[type="checkbox"] {
 .input-field input[type=number]:not(.browser-default):focus:not([readonly]) ~ label,
 .input-field input[type=number]:not(.browser-default):valid ~ label {
     top: 0 !important;
-    transform: translateY(-20px) scale(0.85) !important;
-    -webkit-transform: translateY(-20px) scale(0.85) !important;
-    -moz-transform: translateY(-20px) scale(0.85) !important;
+    transform: translateY(-10px) scale(0.85) !important;
+    -webkit-transform: translateY(-10px) scale(0.85) !important;
+    -moz-transform: translateY(-10px) scale(0.85) !important;
     transform-origin: 0% 100% !important;
 }
 
