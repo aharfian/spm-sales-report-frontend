@@ -435,8 +435,8 @@ input[type="checkbox"] {
 
 /* Menaikkan tinggi modal pop-up */
 #pinModal .modal-content {
-    padding-top: 35px !important; /* Menambah padding atas */
-    padding-bottom: 35px !important; /* Menambah padding bawah */
+    padding-top: 45px !important; /* Menambah padding atas */
+    padding-bottom: 45px !important; /* Menambah padding bawah */
 }
 
 /* Perbaikan input PIN dan ikon mata */
