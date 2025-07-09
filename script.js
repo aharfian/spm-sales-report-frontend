@@ -20,9 +20,16 @@ document.addEventListener('DOMContentLoaded', function () {
   const submitNewReportBtn = document.getElementById('submitNewReportBtn');
   const warningRevisiDiv = document.getElementById('warningRevisi');
 
+  // --- Elemen Modal PIN ---
+  const pinModal = document.getElementById('pinModal');
+  const pinInput = document.getElementById('pinInput');
+  const confirmPinBtn = document.getElementById('confirmPinBtn');
+  const pinModalInstance = M.Modal.getInstance(pinModal); // Dapatkan instance modal setelah diinisialisasi
+
   let storeSpmData = [];
   let productCategoryData = [];
   let categoryToKatabanMap = {};
+  let latestSubmitPayload = null; // Variabel untuk menyimpan payload sebelum PIN
 
   async function fetchStoreSpmData() {
     const response = await fetch(WEB_APP_URL + '?action=getStoreSpmData');
@@ -220,11 +227,11 @@ document.addEventListener('DOMContentLoaded', function () {
     else if (salesItemsContainer.children.length === 0) addSalesItemRow();
   });
 
-  submitReportBtn.addEventListener('click', async function (e) {
-    e.preventDefault();
+  // --- MODIFIKASI DIMULAI DI SINI ---
 
-    const pin = prompt('Masukkan PIN untuk verifikasi:');
-    if (!pin) return M.toast({ html: 'PIN wajib diisi', classes: 'red' });
+  // Event listener untuk tombol "Kirim Laporan" (submitReportBtn)
+  submitReportBtn.addEventListener('click', function (e) {
+    e.preventDefault();
 
     const reportDate = document.getElementById('reportDate').value;
     const storeName = document.getElementById('storeName').value;
@@ -241,6 +248,63 @@ document.addEventListener('DOMContentLoaded', function () {
       return M.toast({ html: 'Tambahkan minimal 1 item atau centang No Sale', classes: 'red' });
     }
 
+    try {
+      if (!isNoSale) {
+        for (const card of itemCards) {
+          const category = card.querySelector('.category-select').value;
+          const model = card.querySelector('.kataban-select').value;
+          const qty = card.querySelector('.qty-input').value;
+          if (!category || !model || qty <= 0) {
+            throw new Error('Lengkapi semua item penjualan dengan benar');
+          }
+          reportItems.push({ category, model, qty: parseInt(qty) });
+        }
+      }
+
+      // Simpan semua payload untuk nanti digunakan setelah PIN dimasukkan
+      latestSubmitPayload = {
+        reportDate,
+        storeName,
+        spmName,
+        isNoSale,
+        notes,
+        salesItems: reportItems
+      };
+
+      // Reset input PIN dan buka modal PIN
+      pinInput.value = ''; // Kosongkan input PIN setiap kali modal dibuka
+      M.updateTextFields(); // Update label input PIN
+      pinModalInstance.open();
+
+    } catch (err) {
+      M.toast({ html: '⚠️ ' + err.message, classes: 'red' });
+    }
+  });
+
+  // Event listener untuk tombol "Kirim" di dalam Modal PIN (confirmPinBtn)
+  confirmPinBtn.addEventListener('click', async function (e) {
+    e.preventDefault();
+
+    const pin = pinInput.value;
+    if (!pin) {
+      M.toast({ html: 'PIN wajib diisi', classes: 'red' });
+      return; // Jangan menutup modal jika PIN kosong
+    }
+
+    // Pastikan latestSubmitPayload sudah ada
+    if (!latestSubmitPayload) {
+      M.toast({ html: 'Terjadi kesalahan, data laporan tidak ditemukan.', classes: 'red' });
+      pinModalInstance.close(); // Tutup modal jika payload tidak ada
+      return;
+    }
+
+    // Ekstrak data dari latestSubmitPayload
+    const { reportDate, storeName, spmName, isNoSale, notes, salesItems } = latestSubmitPayload;
+
+    // Tutup modal PIN untuk memberikan feedback ke form utama
+    pinModalInstance.close(); // Tutup modal segera setelah PIN diambil
+
+    // Tampilkan feedback loading di tombol utama
     submitReportBtn.disabled = true;
     submitReportBtn.innerHTML = 'Mengirim... <i class="material-icons right">send</i>';
     submitReportBtn.classList.add('pulse');
@@ -255,22 +319,10 @@ document.addEventListener('DOMContentLoaded', function () {
         throw new Error('Data sudah pernah dikirim. Tambahkan kata "Revisi" pada catatan.');
       }
 
-      if (!isNoSale) {
-        for (const card of itemCards) {
-          const category = card.querySelector('.category-select').value;
-          const model = card.querySelector('.kataban-select').value;
-          const qty = card.querySelector('.qty-input').value;
-          if (!category || !model || qty <= 0) {
-            throw new Error('Lengkapi semua item penjualan dengan benar');
-          }
-          reportItems.push({ category, model, qty: parseInt(qty) });
-        }
-      }
-
       const res = await fetch(WEB_APP_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ reportDate, storeName, spmName, isNoSale, notes, salesItems: reportItems, pin }),
+        body: JSON.stringify({ reportDate, storeName, spmName, isNoSale, notes, salesItems, pin }),
       });
 
       const result = await res.json();
@@ -284,6 +336,7 @@ document.addEventListener('DOMContentLoaded', function () {
         noSaleCheckbox.checked = false;
         salesDetailSection.style.display = 'block';
         warningRevisiDiv.style.display = 'none';
+        pinInput.value = ''; // Kosongkan input PIN setelah berhasil
       } else {
         throw new Error(result.message);
       }
@@ -295,8 +348,11 @@ document.addEventListener('DOMContentLoaded', function () {
       submitReportBtn.disabled = false;
       submitReportBtn.innerHTML = 'Kirim Laporan <i class="material-icons right">send</i>';
       submitReportBtn.classList.remove('pulse');
+      // Tidak perlu menutup modal di sini lagi karena sudah ditutup di awal 'confirmPinBtn' handler
+      // Tapi jika ada kebutuhan untuk membuka kembali modal jika ada error spesifik PIN, bisa ditambahkan logika
     }
   });
+
 
   submitNewReportBtn.addEventListener('click', () => {
     successMessageSection.classList.add('hidden');
@@ -324,5 +380,5 @@ document.addEventListener('DOMContentLoaded', function () {
       salesReportForm.classList.remove('hidden');
     });
   }
-  M.Modal.init(document.querySelectorAll('.modal'));
+  M.Modal.init(document.querySelectorAll('.modal')); // Pastikan ini tetap ada untuk inisialisasi modal
 });
