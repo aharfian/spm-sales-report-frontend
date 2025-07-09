@@ -14,7 +14,6 @@
       <div class="card-content">
         <span class="card-title center-align">Laporan Penjualan Harian SPM</span>
 
-        <!-- 🔁 Loading Spinner -->
         <div id="loadingSection" class="center-align" style="margin-top: 20px;">
           <div class="preloader-wrapper big active">
             <div class="spinner-layer spinner-blue-only">
@@ -29,7 +28,6 @@
           </p>
         </div>
 
-        <!-- 🔧 Form Laporan -->
         <form id="salesReportForm" class="hidden">
           <div class="row">
             <div class="input-field col s12">
@@ -74,12 +72,10 @@
             </div>
           </div>
 
-          <!-- ⚠️ Notifikasi jika data sebelumnya sudah ada -->
           <div id="warningRevisi" class="card-panel yellow lighten-4 black-text" style="display:none; margin-top:12px;">
             Anda sudah pernah melaporkan untuk tanggal ini. Wajib isi catatan dengan <strong>"Revisi"</strong>.
           </div>
 
-          <!-- 📦 Detail Penjualan -->
           <div id="salesDetailSection">
             <div class="divider mt-3 mb-3"></div>
             <h5 class="section-title">Detail Penjualan</h5>
@@ -94,7 +90,6 @@
             </div>
           </div>
 
-          <!-- 📝 Catatan -->
           <div class="row mt-3">
             <div class="input-field col s12">
               <textarea id="notes" class="materialize-textarea"></textarea>
@@ -102,7 +97,6 @@
             </div>
           </div>
 
-          <!-- 🚀 Tombol Submit -->
           <div class="row mt-3">
             <div class="col s12 center-align">
               <button class="btn waves-effect waves-light green darken-1" type="submit" name="action" id="submitReportBtn">
@@ -113,7 +107,6 @@
           </div>
         </form>
 
-        <!-- ✅ Pesan Setelah Berhasil -->
         <div id="responseMessage" class="mt-3 center-align"></div>
 
         <div id="successMessageSection" class="center-align hidden mt-3">
@@ -129,26 +122,24 @@
     </div>
   </div>
 
-  <!-- 🔗 External Script -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
   <script src="script.js"></script>
 
-  <!-- 🔒 Modal Input PIN -->
   <div id="pinModal" class="modal">
-  <div class="modal-content">
-    <h5>Masukkan PIN</h5>
-    <div class="input-field">
-      <input id="pinInput" type="password" maxlength="10">
-      <label for="pinInput">PIN Anda</label>
-      <span class="prefix">
+    <div class="modal-content">
+      <h5>Masukkan PIN</h5>
+      <div class="input-field">
+        <input id="pinInput" type="password" maxlength="10">
+        <label for="pinInput">PIN Anda</label>
+        <span class="prefix">
           <i class="material-icons" id="togglePinVisibility" style="cursor: pointer;">visibility</i>
-      </span>
+        </span>
+      </div>
+    </div>
+    <div class="modal-footer center-align-buttons">
+      <button id="confirmPinBtn" class="btn green waves-effect waves-light">Kirim</button>
+      <button id="cancelPinBtn" class="modal-close btn-flat waves-effect waves-grey">Batal</button>
     </div>
   </div>
-  <div class="modal-footer center-align-buttons">
-    <button id="confirmPinBtn" class="btn green waves-effect waves-light">Kirim</button>
-    <button id="cancelPinBtn" class="modal-close btn-flat waves-effect waves-grey">Batal</button>
-  </div>
- </div>
 </body>
 </html>
