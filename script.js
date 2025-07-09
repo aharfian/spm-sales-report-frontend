@@ -1,4 +1,4 @@
-// script.js - VERSI FINAL TANPA ERROR "undefined" dan "ReferenceError"
+/// script.js - VERSI FINAL TANPA ERROR "undefined" dan "ReferenceError"
 
 document.addEventListener('DOMContentLoaded', function () {
   // --- Inisialisasi Materialize CSS ---
