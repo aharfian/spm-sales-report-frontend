@@ -379,6 +379,11 @@ input[type="checkbox"] {
   background-color: transparent !important;
 }
 
+/* Perbaikan untuk pinModal */
+#pinModal {
+  border-radius: 12px; /* Mengembalikan sudut melengkung */
+}
+
 #pinModal .modal-content h5 {
   margin-bottom: 20px;
   font-weight: 600;
@@ -409,6 +414,11 @@ input[type="checkbox"] {
 .modal-footer.center-align-buttons button {
     flex: 1; /* Biarkan tombol mengambil ruang yang sama */
     max-width: 120px; /* Batasi lebar maksimum agar tidak terlalu besar */
+    height: 45px; /* Memastikan tinggi sama dengan tombol .btn */
+    line-height: 45px; /* Memastikan line-height sama */
+    padding: 0 20px; /* Memastikan padding horizontal sama */
+    font-size: 0.95rem; /* Memastikan ukuran font sama */
+    border-radius: 6px; /* Memastikan sudut tombol sama */
 }
 
 /* Styling kustom untuk tombol "Batal" */
@@ -427,4 +437,20 @@ input[type="checkbox"] {
 #pinModal .modal-content {
     padding-top: 35px !important; /* Menambah padding atas */
     padding-bottom: 35px !important; /* Menambah padding bawah */
+}
+
+/* Perbaikan input PIN dan ikon mata */
+#pinModal .input-field {
+    width: 80%; /* Atur lebar input-field agar ada ruang di sisi kanan */
+    margin-left: auto; /* Pusatkan input-field */
+    margin-right: auto; /* Pusatkan input-field */
+}
+
+#pinModal .input-field .prefix {
+    position: absolute;
+    right: 0; /* Posisikan ikon di paling kanan input field */
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.5rem; /* Ukuran ikon */
+    color: #757575; /* Warna ikon */
 }
