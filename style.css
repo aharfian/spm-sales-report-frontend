@@ -407,7 +407,7 @@ input[type="checkbox"] {
     justify-content: center; /* Pusatkan secara horizontal */
     align-items: center; /* Mencegah tombol meregang secara vertikal */
     gap: 20px; /* Memberi jarak antar tombol */
-    padding: 10px 20px 40px; /* Sesuaikan padding footer: top, right/left, bottom */
+    padding: 30px 20px 40px; /* Sesuaikan padding footer: top, right/left, bottom */
     border-top: 1px solid #eee; /* Beri garis pemisah di atas footer */
 }
 
