@@ -1,4 +1,4 @@
-/// script.js - VERSI FINAL TANPA ERROR "undefined" dan "ReferenceError"
+// script.js - VERSI FINAL DENGAN PERBAIKAN UI DAN FUNGSI PIN
 
 document.addEventListener('DOMContentLoaded', function () {
   // --- Inisialisasi Materialize CSS ---
@@ -29,6 +29,7 @@ document.addEventListener('DOMContentLoaded', function () {
   const pinModal = document.getElementById('pinModal');
   const pinInput = document.getElementById('pinInput');
   const confirmPinBtn = document.getElementById('confirmPinBtn');
+  const togglePinVisibility = document.getElementById('togglePinVisibility'); // Poin 3: Ambil referensi ikon
   // Pastikan mendapatkan instance modal SETELAH M.Modal.init() dipanggil
   const pinModalInstance = M.Modal.getInstance(pinModal);
 
@@ -275,6 +276,21 @@ document.addEventListener('DOMContentLoaded', function () {
     else if (salesItemsContainer.children.length === 0) addSalesItemRow();
   });
 
+  // Poin 3: Event Listener untuk ikon show/hide PIN
+  if (togglePinVisibility) { // Pastikan elemen ditemukan
+    togglePinVisibility.addEventListener('click', function() {
+      if (pinInput.type === 'password') {
+        pinInput.type = 'text';
+        this.textContent = 'visibility_off';
+      } else {
+        pinInput.type = 'password';
+        this.textContent = 'visibility';
+      }
+      pinInput.focus(); // Fokuskan kembali input setelah perubahan
+    });
+  }
+
+
   // --- Event Listener Tombol "Kirim Laporan" ---
   submitReportBtn.addEventListener('click', function (e) {
     e.preventDefault();
@@ -322,6 +338,7 @@ document.addEventListener('DOMContentLoaded', function () {
       // Reset input PIN dan buka modal PIN
       pinInput.value = ''; // Kosongkan input PIN setiap kali modal dibuka
       M.updateTextFields(); // Update label input PIN
+      pinInput.focus(); // Fokuskan input PIN saat modal dibuka
 
       // Pastikan pinModalInstance terdefinisi sebelum mencoba membukanya
       if (pinModalInstance) {
