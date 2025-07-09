@@ -405,8 +405,9 @@ input[type="checkbox"] {
 .modal-footer.center-align-buttons {
     display: flex;
     justify-content: center; /* Pusatkan secara horizontal */
+    align-items: center; /* Mencegah tombol meregang secara vertikal */
     gap: 20px; /* Memberi jarak antar tombol */
-    padding: 10px 20px; /* Sesuaikan padding footer jika perlu */
+    padding: 10px 20px 20px; /* Sesuaikan padding footer: top, right/left, bottom */
     border-top: 1px solid #eee; /* Beri garis pemisah di atas footer */
 }
 
@@ -435,8 +436,8 @@ input[type="checkbox"] {
 
 /* Menaikkan tinggi modal pop-up */
 #pinModal .modal-content {
-    padding-top: 45px !important; /* Menambah padding atas */
-    padding-bottom: 45px !important; /* Menambah padding bawah */
+    padding-top: 35px !important; /* Menambah padding atas */
+    padding-bottom: 35px !important; /* Menambah padding bawah */
 }
 
 /* Perbaikan input PIN dan ikon mata */
