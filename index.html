@@ -133,23 +133,22 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
   <script src="script.js"></script>
 
-    <!-- 🔒 Modal Input PIN -->
+  <!-- 🔒 Modal Input PIN -->
   <div id="pinModal" class="modal">
-    <div class="modal-content">
-      <h5>Masukkan PIN</h5>
-      <div class="input-field">
-        <input id="pinInput" type="password" maxlength="10">
-        <label for="pinInput">PIN Anda</label>
-      </div>
-    </div>
-    <div id="pinModal" class="modal">
-      <div class="modal-content">
-        </div>
-      <div class="modal-footer center-align-buttons">
-        <button id="confirmPinBtn" class="btn green waves-effect waves-light">Kirim</button>
-        <button id="cancelPinBtn" class="btn-flat waves-effect waves-grey">Batal</button>
-      </div>
+  <div class="modal-content">
+    <h5>Masukkan PIN</h5>
+    <div class="input-field">
+      <input id="pinInput" type="password" maxlength="10">
+      <label for="pinInput">PIN Anda</label>
+      <span class="prefix">
+          <i class="material-icons" id="togglePinVisibility" style="cursor: pointer;">visibility</i>
+      </span>
     </div>
   </div>
+  <div class="modal-footer center-align-buttons">
+    <button id="confirmPinBtn" class="btn green waves-effect waves-light">Kirim</button>
+    <button id="cancelPinBtn" class="modal-close btn-flat waves-effect waves-grey">Batal</button>
+  </div>
+ </div>
 </body>
 </html>
