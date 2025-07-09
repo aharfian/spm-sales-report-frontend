@@ -391,5 +391,28 @@ input[type="checkbox"] {
   letter-spacing: 0.2rem;
 }
 
+#pinModal h5 {
+    margin-bottom: 25px; /* Menambah jarak 25px di bawah judul */
+    text-align: center; /* Pusatkan judul */
 }
 
+/* Untuk memusatkan tombol di modal-footer dan memberi jarak */
+.modal-footer.center-align-buttons {
+    display: flex;
+    justify-content: center; /* Pusatkan secara horizontal */
+    gap: 20px; /* Memberi jarak antar tombol */
+    padding: 10px 20px; /* Sesuaikan padding footer jika perlu */
+    border-top: 1px solid #eee; /* Beri garis pemisah di atas footer */
+}
+
+/* Styling kustom untuk tombol "Batal" */
+#cancelPinBtn {
+    border: 1px solid #757575; /* Border abu-abu */
+    color: #757575; /* Warna teks abu-abu */
+    background-color: transparent; /* Pastikan background transparan */
+}
+
+#cancelPinBtn:hover {
+    background-color: #f5f5f5; /* Efek hover ringan */
+    color: #505050; /* Warna teks sedikit lebih gelap saat hover */
+}
