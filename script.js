@@ -456,7 +456,7 @@ document.addEventListener('DOMContentLoaded', function () {
       delayNotice.id = 'delayNotice';
       delayNotice.className = 'orange-text text-darken-3';
       delayNotice.style.marginTop = '12px';
-      delayNotice.textContent = 'Mohon tunggu, kemungkinan traffic server sedang tinggi atau server sedang bangun...';
+      delayNotice.textContent = 'Mohon tunggu, kemungkinan traffic server sedang tinggi...';
       loadingSection.appendChild(delayNotice);
     }, 4000);
     Promise.all([fetchStoreSpmData(), fetchProdukKategoriData()]).then(() => {
