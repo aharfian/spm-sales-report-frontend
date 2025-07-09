@@ -1,4 +1,4 @@
-//* style.css */
+/* style.css */
 
 body {
     background-color: #DFF3FF; /* Warna latar belakang biru pudar sesuai permintaan */
@@ -250,7 +250,6 @@ select:focus {
     transform: translateY(-20px) scale(0.85) !important;
     -webkit-transform: translateY(-20px) scale(0.85) !important;
     -moz-transform: translateY(-20px) scale(0.85) !important;
-    transform-origin: 0% 100% !important;
 }
 
 /* Tombol Kirim Laporan */
@@ -392,23 +391,6 @@ input[type="checkbox"] {
   letter-spacing: 0.2rem;
 }
 
-/* Penyesuaian tinggi modal PIN */
-#pinModal .modal-content {
-    padding-top: 30px; /* Menambah jarak dari atas */
-    padding-bottom: 30px; /* Menambah jarak dari bawah */
-    min-height: 220px !important; /* Poin 4: Increased height */
-    display: flex; /* Menggunakan flexbox untuk konten */
-    flex-direction: column; /* Tata letak kolom */
-    justify-content: center; /* Pusatkan konten secara vertikal */
-}
-
-/* Opsi lain: mengatur langsung pada .modal jika diperlukan, tapi .modal-content lebih spesifik */
-#pinModal {
-    max-height: 80%; /* Batasi tinggi modal agar tidak terlalu besar di layar kecil */
-    border-radius: 12px !important; /* Poin 5: Added border-radius */
-}
-
-/* Styling judul modal */
 #pinModal h5 {
     margin-bottom: 25px; /* Menambah jarak 25px di bawah judul */
     text-align: center; /* Pusatkan judul */
@@ -416,11 +398,17 @@ input[type="checkbox"] {
 
 /* Untuk memusatkan tombol di modal-footer dan memberi jarak */
 .modal-footer.center-align-buttons {
-    display: flex !important; /* Poin 1: Added !important */
-    justify-content: center !important; /* Poin 1: Added !important */
-    gap: 20px !important; /* Poin 1: Added !important */
-    padding: 10px 20px !important;
-    border-top: 1px solid #eee !important;
+    display: flex;
+    justify-content: center; /* Pusatkan secara horizontal */
+    gap: 20px; /* Memberi jarak antar tombol */
+    padding: 10px 20px; /* Sesuaikan padding footer jika perlu */
+    border-top: 1px solid #eee; /* Beri garis pemisah di atas footer */
+}
+
+/* Styling kustom untuk tombol "Kirim" dan "Batal" agar sejajar dan simetris */
+.modal-footer.center-align-buttons button {
+    flex: 1; /* Biarkan tombol mengambil ruang yang sama */
+    max-width: 120px; /* Batasi lebar maksimum agar tidak terlalu besar */
 }
 
 /* Styling kustom untuk tombol "Batal" */
@@ -435,32 +423,8 @@ input[type="checkbox"] {
     color: #505050; /* Warna teks sedikit lebih gelap saat hover */
 }
 
-/* Penyesuaian untuk ikon show/hide di input field */
-.input-field .prefix {
-    position: absolute;
-    right: 0; /* Posisikan di kanan */
-    top: 50%; /* Atur posisi vertikal - Poin 2 */
-    transform: translateY(-50%); /* Pusatkan vertikal - Poin 2 */
-    margin-top: 0; /* Ensure no extra margin - Poin 2 */
-    z-index: 2; /* Ensure it's above the input and label for clickability - Poin 2 */
-}
-
-/* Pastikan input field memiliki padding kanan yang cukup agar tidak tumpang tindih dengan ikon */
-#pinInput { /* Targeted #pinInput specifically for padding-right and box-sizing */
-    padding-right: 35px; /* Beri ruang untuk ikon */
-    box-sizing: border-box; /* Include padding in width - Poin 2 */
-}
-
-/* Add transition to the icon for a smoother feel even without textContent animation */
-#togglePinVisibility {
-    transition: color 0.2s ease-in-out, transform 0.2s ease-in-out; /* Poin 3: Added transition */
-}
-#togglePinVisibility:hover {
-    color: #2196f3; /* Poin 3: Change color on hover for feedback */
-    transform: scale(1.1); /* Poin 3: Slight scale on hover */
-}
-
-/* Ensure label pointer-events for clickability of the icon */
-.input-field label {
-    pointer-events: none; /* Make sure label doesn't block clicks on prefix icon */
+/* Menaikkan tinggi modal pop-up */
+#pinModal .modal-content {
+    padding-top: 35px !important; /* Menambah padding atas */
+    padding-bottom: 35px !important; /* Menambah padding bawah */
 }
