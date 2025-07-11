@@ -1,0 +1,25 @@
+name: Warm Up Render Server Daily
+
+on:
+  schedule:
+    # Trigger setiap 5 menit pada jam 15:00 UTC hingga 03:00 UTC
+    # Ini setara dengan 22:00 WIB hingga 10:00 WIB (UTC+7)
+    # Sesuaikan jika server Render Anda ada di zona waktu berbeda
+    - cron: '*/5 15-23,0-3 * * *'
+
+jobs:
+  warmup:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Get Random Delay
+      id: delay
+      run: echo "::set-output name=sleep_time::$(shuf -i 180-480 -n 1)"
+      # Ini menghasilkan angka acak antara 180 (3 menit) dan 480 (8 menit) detik
+
+    - name: Wait for Random Delay
+      run: sleep ${{ steps.delay.outputs.sleep_time }}s
+      # Menunggu selama waktu acak yang dihasilkan
+
+    - name: Ping Render App
+      run: curl -X GET https://spm-middleware.onrender.com
+      # GANTI https://YOUR_RENDER_APP_URL.onrender.com dengan URL aplikasi Render Anda!
